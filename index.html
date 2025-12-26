@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABAP Certification Quiz - Pro (Full Content)</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --warning: #f1c40f;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            color: #333;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SOL PANEL (NAVİGASYON) --- */
+        #nav-panel {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .nav-header {
+            padding: 20px;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        .nav-stats {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-around;
+            background: #f8f9fa;
+        }
+
+        .nav-grid-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .nav-item {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eee;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #555;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: #dcdcdc;
+        }
+
+        .nav-item.active {
+            border-color: var(--primary);
+            background-color: #fff;
+            color: var(--primary);
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        .nav-item.correct { background-color: var(--success); color: white; }
+        .nav-item.wrong { background-color: var(--danger); color: white; }
+
+        /* Finish Button Area */
+        .nav-footer {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+        
+        .btn-finish {
+            width: 100%;
+            background-color: var(--dark);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .btn-finish:hover { background-color: #1a252f; }
+
+        /* --- SAĞ PANEL (SORU ALANI) --- */
+        #main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            width: 90%;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-badge {
+            background: var(--dark);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: var(--dark);
+            margin-top: 0;
+        }
+
+        /* Kod Blokları */
+        pre {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--primary);
+            margin: 15px 0;
+        }
+        
+        code { font-family: 'Consolas', monospace; }
+
+        /* Şıklar */
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--primary);
+            background-color: #f7fbff;
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background-color: #eaf6ff;
+            font-weight: 600;
+        }
+
+        .option-marker {
+            font-weight: bold;
+            margin-right: 15px;
+            min-width: 25px;
+        }
+
+        /* Cevap Renkleri */
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success) !important;
+            color: #155724;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: var(--danger) !important;
+            color: #721c24;
+        }
+
+        .option-btn.missed {
+            border-color: var(--success) !important;
+            background-color: #fff;
+            color: var(--success);
+            border-style: dashed;
+        }
+
+        /* Açıklama */
+        #explanation-box {
+            margin-top: 25px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 20px;
+            border-radius: 8px;
+            color: #856404;
+            display: none;
+        }
+        
+        #explanation-text ul { padding-left: 20px; }
+        #explanation-text code { background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 3px; }
+
+        /* Alt Kontroller */
+        .footer-controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-btn-group { display: flex; gap: 10px; }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            transition: opacity 0.3s;
+        }
+        
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { background-color: #ccc !important; cursor: not-allowed; }
+
+        .btn-nav { background-color: var(--gray); }
+        .btn-check { background-color: var(--success); }
+        
+        .badge-info {
+            background: #eee;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #555;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        /* --- MODAL (POPUP) --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--dark);
+            margin: 10px 0;
+        }
+
+        .result-message {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .wrong-list-container {
+            text-align: left;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .wrong-list-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .wrong-item {
+            background: var(--danger);
+            color: white;
+            padding: 8px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .wrong-item:hover { transform: scale(1.1); }
+
+        .btn-close-modal {
+            margin-top: 20px;
+            background: var(--dark);
+            width: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { flex-direction: column; overflow: auto; height: auto; }
+            #nav-panel { width: 100%; height: auto; order: 2; }
+            #main-area { height: auto; order: 1; }
+            .quiz-container { margin: 20px auto; padding: 20px; }
+            .nav-grid-container { max-height: 200px; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="nav-panel">
+        <div class="nav-header">
+            <h3>ABAP Soru Paneli</h3>
+            <h3>Kağan AKKAYA</h3>
+        </div>
+        <div class="nav-stats">
+            <span style="color:var(--success)">✔ <span id="total-correct">0</span></span>
+            <span style="color:var(--danger)">✖ <span id="total-wrong">0</span></span>
+            <span style="color:var(--primary)">%<span id="score-percent">0</span></span>
+        </div>
+        <div class="nav-grid-container">
+            <div id="nav-grid" class="nav-grid"></div>
+        </div>
+        <div class="nav-footer">
+            <button class="btn-finish" onclick="finishExam()">🏁 Sınavı Bitir</button>
+        </div>
+    </div>
+
+    <div id="main-area">
+        <div class="quiz-container">
+            <div class="header">
+                <span class="question-badge" id="q-header">SORU 1 / 126</span>
+            </div>
+
+            <div id="quiz-content">
+                <div id="question-text"></div>
+                <div id="options-container" class="options-grid"></div>
+                
+                <div id="explanation-box">
+                    <h4>Açıklama:</h4>
+                    <div id="explanation-text"></div>
+                </div>
+            </div>
+
+            <div class="footer-controls">
+                <div class="nav-btn-group">
+                    <button id="prev-btn" class="btn btn-nav" onclick="prevQuestion()">⬅ Önceki</button>
+                    <button id="next-btn" class="btn btn-nav" onclick="nextQuestion()">Sonraki ➡</button>
+                </div>
+                <button id="check-btn" class="btn btn-check" onclick="checkAnswer()">Cevabı Kontrol Et</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Sınav Sonucu</h2>
+            <div id="result-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
+            <div id="final-score-percent" class="result-score"></div>
+            <div id="final-message" class="result-message"></div>
+
+            <div class="stat-grid">
+                <div class="stat-box" style="background: var(--success)">
+                    <div style="font-size:0.8rem">DOĞRU</div>
+                    <div id="final-correct" style="font-size:1.5rem; font-weight:bold">0</div>
+                </div>
+                <div class="stat-box" style="background: var(--danger)">
+                    <div style="font-size:0.8rem">YANLIŞ</div>
+                    <div id="final-wrong" style="font-size:1.5rem; font-weight:bold">0</div>
+                </div>
+                <div class="stat-box" style="background: var(--gray)">
+                    <div style="font-size:0.8rem">BOŞ</div>
+                    <div id="final-empty" style="font-size:1.5rem; font-weight:bold">0</div>
+                </div>
+            </div>
+
+            <div id="wrong-answers-section" class="wrong-list-container" style="display:none;">
+                <h4 style="color:var(--danger)">Hatalı Soruları İncele:</h4>
+                <p style="font-size:0.8rem; color:#666">Numaraya tıklayarak soruyu ve açıklamasını görebilirsin.</p>
+                <div id="wrong-answers-grid" class="wrong-list-grid"></div>
+            </div>
+
+            <button class="btn btn-close-modal" onclick="closeModal()">Pencereyi Kapat</button>
+        </div>
+    </div>
+
+<script>
+
+// --- GÜNCELLENMİŞ TAM İÇERİK VERİLERİ (130 Soru) ---
+const rawQuestions = [
+  {
+    "id": 1,
+    "q": "While debugging an ABAP program, you want the program to stop whenever the value of a variable changes.",
+    "options": [
+      "Exception breakpoint",
+      "Watchpoint",
+      "Conditional breakpoint",
+      "None of the above"
+    ],
+    "ans": [1],
+    "expl": "<strong>Watchpoint</strong>, bir değişkenin değeri değiştiğinde programın durmasını sağlar. Exception breakpoint istisna durumlarında, conditional breakpoint ise belirli bir koşul sağlandığında kullanılır."
+  },
+  {
+    "id": 2,
+    "q": "How can you control data access of a business user? <br><i>Note: There are 3 correct answers to this question.</i>",
+    "options": [
+      "To control the general access implicitly via an Access Control object (define role).",
+      "To control the \"Read access\" implicitly via an Access Control object (define role).",
+      "To control the \"Create, Update, and Delete access\" implicitly via an Access Control object (define role)",
+      "To control the \"Create, Update, and Delete access\" via explicit check using AUTHORITY-CHECK.",
+      "To control the \"Read access\" via explicit check using AUTHORITY-CHECK."
+    ],
+    "ans": [1, 2, 3],
+    "expl": "Create, Update, Delete erişimi için <strong>explicit AUTHORITY-CHECK</strong> ve <strong>implicit Access Control</strong> kullanılır. Read access Access Control ile implicit olarak kontrol edilir. <br><br><strong>Detay:</strong> Explicit kontrol (AUTHORITY-CHECK) kod içinde doğrudan yapılır. Implicit kontrol (Access Control) RAP modelinde rol tanımları ile otomatik yapılır."
+  },
+  {
+    "id": 3,
+    "q": "Which function call returns 0?",
+    "options": [
+      "<pre><code>find( val = 'FIND Found found' sub = 'F' occ = -2 case = abap_true )</code></pre>",
+      "<pre><code>find( val = 'find FOUND Found' sub = 'F' occ = -2 case = abap_false )</code></pre>",
+      "<pre><code>find( val = 'fIND FOUND FOUND' sub = 'F' )</code></pre>",
+      "<pre><code>find( val = 'find Found FOUND' sub = 'F' occ = -2 )</code></pre>"
+    ],
+    "ans": [0],
+    "expl": "<strong>A.</strong> Metinde 'F' harfi (case-sensitive) 0 ve 5. indekslerde var. <code>occ = -2</code> ifadesi sağdan 2. eşleşmeyi arar. Sağdan saydığımızda ikinci eşleşme en baştaki 'F' harfidir ve indeksi 0'dır."
+  },
+  {
+    "id": 4,
+    "q": "Given this code,<pre><code>INTERFACE if1.\n  METHODS m1.\nENDINTERFACE.\nCLASS cl1 DEFINITION.\n  PUBLIC SECTION.\n    INTERFACES if1.\n    METHODS m2.\nENDCLASS.\n\n*in a method of another class;\nDATA go_if1 TYPE REF TO if1.\nDATA go_cl1 TYPE REF TO cl1.\ngo_cl1 = NEW #( ... ).\ngo_if1 = go_cl1.</code></pre>What are valid statements? (Select 3 correct answers)",
+    "options": [
+      "Instead of go_cl1 = NEW #( ... ) you could use go_if1 = NEW cl1( ... ).",
+      "go_if1 may call method m1 with go_if1->m1( ... ).",
+      "go_cl1 may call method m1 with go_cl1->if1~m1( ... ).",
+      "go_cl1 may call method m1 directly without interface notation",
+      "go_if1 may call method m2 with go_if1->m2( ... )"
+    ],
+    "ans": [0, 1, 2],
+    "expl": "<strong>A:</strong> <code>NEW cl1(...)</code> interface referansına atanabilir.<br><strong>B:</strong> Interface referansı interface metodunu doğrudan çağırabilir.<br><strong>C:</strong> Sınıf referansı, interface metodunu <code>interface~metod</code> notasyonu ile çağırabilir.<br><strong>Yanlışlar:</strong> D (alias tanımlı değil), E (interface referansı sınıfa özgü metodu göremez)."
+  },
+  {
+    "id": 5,
+    "q": "Which function call returns 0?",
+    "options": [
+      "Count_any_of( val = 'ABAP ABAP abap' sub = \"AB\" )",
+      "Count( val = 'ABAP ABAP abap' sub = 'AB' )",
+      "find_any_of( val = 'ABAP ABAP abap' sub = 'AB' )",
+      "find_any_not_of( val = 'ABAP ABAP abap' sub = 'AB' )"
+    ],
+    "ans": [2],
+    "expl": "<strong>find_any_of:</strong> Karakterlerden herhangi birinin ilk bulunduğu pozisyonu döner. 'A' karakteri 0. indekste olduğu için 0 döner. <code>find_any_not_of</code> ise 'A' veya 'B' olmayan ilk karakteri (boşluk veya P) arar."
+  },
+  {
+    "id": 6,
+    "q": "In which products must you use the ABAP Cloud Development Model? (Select 2)",
+    "options": [
+      "SAP S/4HANA Cloud, private edition",
+      "SAP BTP, ABAP environment",
+      "SAP S/4HANA on premise",
+      "SAP S/4HANA Cloud, public edition"
+    ],
+    "ans": [1, 3],
+    "expl": "ABAP Cloud Development Model, <strong>SAP BTP, ABAP Environment</strong> ve <strong>SAP S/4HANA Cloud, public edition</strong> için zorunludur."
+  },
+  {
+    "id": 7,
+    "q": "Which RESTful Application Programming object can be used to organize the display of fields in an app?",
+    "options": [
+      "Data model view",
+      "Metadata extension",
+      "Service definition",
+      "Projection view"
+    ],
+    "ans": [1],
+    "expl": "<strong>Metadata Extension</strong>, UI alanlarının görünümünü (etiketler, sıralama, görünürlük vb.) düzenlemek için kullanılır."
+  },
+  {
+    "id": 8,
+    "q": "When accessing the subclass instance through go_super, what can you do? (Select 2)<pre><code>DATA: go_super TYPE REF TO lcl_super,\n      go_sub   TYPE REF TO lcl_sub.\ngo_sub = NEW #( ... ).\ngo_super = go_sub.\n\"with lcl_super being superclass of lcl_sub</code></pre>",
+    "options": [
+      "Access the inherited private components.",
+      "Access the inherited public components.",
+      "Call a subclass specific public method",
+      "Call inherited public redefined methods."
+    ],
+    "ans": [1, 3],
+    "expl": "Superclass referansı (go_super) üzerinden:<br>1. Üst sınıftan gelen <strong>public</strong> bileşenlere erişilebilir.<br>2. Polimorfizm sayesinde <strong>redefined</strong> metodlar çağrılabilir (alt sınıftaki implementasyon çalışır).<br>Private bileşenlere veya alt sınıfa özgü yeni metodlara erişilemez."
+  },
+  {
+    "id": 9,
+    "q": "Given the following code in an SAP S/4HANA Cloud private edition tenant:<pre><code>CLASS zcl_demo_class DEFINITION.\n  METHODS: m1.\nENDCLASS.\n\nCLASS zcl_demo_class IMPLEMENTATION.\n  METHOD m1.\n    CALL FUNCTION 'ZFI'.  \"Line #6\n  ENDMETHOD\nENDCLASS.</code></pre>Regarding line #6, which of the following are valid statements? (Select 2)",
+    "options": [
+      "ZF1 can be called only if it is released for cloud development.",
+      "ZF1 can be called if a wrapper is created for it and the wrapper itself is released for cloud development.",
+      "ZF1 can be called whether it is released or not for cloud development",
+      "ZF1 can be called if a wrapper is created for it but the wrapper itself is not released for cloud development."
+    ],
+    "ans": [0, 1],
+    "expl": "ABAP Cloud modelinde, farklı dil versiyonundaki nesnelerle çalışmak için: Ya nesne doğrudan <strong>release edilmiş</strong> olmalı (A) ya da release edilmiş bir <strong>wrapper</strong> aracılığıyla erişilmeli (B)."
+  },
+  {
+    "id": 10,
+    "q": "Which restrictions exist for ABAP SQL arithmetic expressions? (Select 2)",
+    "options": [
+      "Floating point types and integer types can NOT be used in the same expression.",
+      "The operator ‘/’ is allowed only in floating point expressions.",
+      "Decimal types and integer types can NOT be used in the same expression.",
+      "The operator ‘**’ is allowed only in floating point expressions."
+    ],
+    "ans": [0, 1],
+    "expl": "1. ABAP SQL aritmetik ifadelerinde <strong>floating point</strong> ve <strong>integer</strong> tipleri aynı ifadede kullanılamaz.<br>2. Bölme operatörü (<code>/</code>) sadece floating point ifadelerde kullanılabilir."
+  },
+  {
+    "id": 11,
+    "q": "Given code:<pre><code>DATA gv_text1 TYPE string.\n\"#EC_NEEDED\nDATA gv_text2 TYPE string ##NEEDED.</code></pre>What are valid statements? (Select 2)",
+    "options": [
+      "The pseudo-comment is checked by the syntax checker",
+      "The pragma is not checked by the syntax checker",
+      "##NEEDED is checked by the syntax checker",
+      "#EC_NEEDED is not checked by the syntax checker"
+    ],
+    "ans": [2, 3],
+    "expl": "<strong>##NEEDED</strong> (Pragma) syntax checker tarafından aktif olarak kontrol edilir. <strong>#EC_NEEDED</strong> (Pseudo-comment) ise syntax checker tarafından kontrol edilmez, daha çok Code Inspector gibi araçlar içindir."
+  },
+  {
+    "id": 12,
+    "q": "Which internal table type allows unique and non-unique keys?",
+    "options": [
+      "Sorted",
+      "Hashed",
+      "Standard"
+    ],
+    "ans": [0],
+    "expl": "<strong>Sorted table</strong> hem unique hem de non-unique key tanımlamaya izin verir. Hashed table sadece unique key destekler, Standard table ise key tanımı yapabilir ama unique kısıtlaması yoktur."
+  },
+  {
+    "id": 13,
+    "q": "In this nested join below in which way is the join evaluated?<pre><code>SELECT FROM t_a AS a\n LEFT OUTER JOIN t_b AS b\n LEFT OUTER JOIN t_c AS c\n ON c~f1 = b~f1 AND c~f2 = b~f2\n ON b~f1 = a~f1\n WHERE .....</code></pre>",
+    "options": [
+      "From left to right",
+      "From right to left",
+      "From top to bottom in the order of the ON conditions",
+      "From bottom to top"
+    ],
+    "ans": [2],
+    "expl": "Nested join yapılarında <code>ON</code> koşulları <strong>yukarıdan aşağıya</strong> doğru değerlendirilir. Önce b ile c join edilir, sonra a ile b."
+  },
+  {
+    "id": 14,
+    "q": "Which extensibility type does SAP recommend you use to enhance the existing UI for an SAP Fiori app?",
+    "options": [
+      "Key user",
+      "Classic",
+      "Side-by-side",
+      "Developer"
+    ],
+    "ans": [0],
+    "expl": " Cevap A olacak sonradan değiştirildi, normalde D'ydi. <strong>Developer extensibility</strong>, SAP Fiori uygulamalarının UI’sini genişletmek için önerilen, ABAP Cloud uyumlu yöntemdir."
+  },
+  {
+    "id": 15,
+    "q": "What are some features of a `unique secondary key`? (Select 2)",
+    "options": [
+      "It is created when a table is filled.",
+      "It is updated when the modified table is read again.",
+      "It is created with the first read access of a table.",
+      "It is updated when the table is modified."
+    ],
+    "ans": [2, 3],
+    "expl": "Unique secondary key, tablonun <strong>ilk okuma erişiminde</strong> (lazy loading) oluşturulur ve tablo üzerinde herhangi bir <strong>veri değişikliği</strong> (insert, modify, delete) yapıldığında güncellenir."
+  },
+  {
+    "id": 16,
+    "q": "Refer to the exhibit.<pre><code>@AccesssControl.authorizationCheck: #NOT_REQUIRED\nDEFINE VIEW ENTITY demo_cds_data_source_matrix\n AS SELECT FROM\n <source>    \"line #4\n {\n  KEY field_1,\n  field_2,\n  field_3\n }</code></pre>Which types are permitted for <code>&lt;source&gt;</code>? (Select 2)",
+    "options": [
+      "Database table",
+      "CDS DDIC-based view",
+      "External view",
+      "Database view"
+    ],
+    "ans": [0, 1],
+    "expl": "CDS View Entity kaynağı olarak <strong>Database table</strong> veya başka bir <strong>CDS DDIC-based view</strong> kullanılabilir. Klasik DDIC Database View veya External View kullanılamaz."
+  },
+  {
+    "id": 17,
+    "q": "When processing a loop with the statement `DO... ENDDO`, what system variable contains the implicit loop counter?",
+    "options": [
+      "sy-linno",
+      "sy-tabix",
+      "sy-subrc",
+      "sy-index"
+    ],
+    "ans": [3],
+    "expl": "<strong>sy-index</strong>, DO...ENDDO ve WHILE...ENDWHILE döngülerinde sayaç değişkenidir."
+  },
+  {
+    "id": 18,
+    "q": "Which patterns raise an exception? (Select 3)<pre><code>A. DATA: gv_target TYPE p DECIMALS 2.\n   CONSTANTS: go intl TYPE i VALUE 3.\n   gv_target = EXACT #( 2 / 3 ).\n\nB. DATA: gv_target TYPE string.\n   CONSTANTS: gco_string TYPE LENGTH 16 VALUE '0123456789ABCDEF*'.\n   gv_target = EXACT #( gco_string+5(5) ).\n\nC. DATA: gv_target TYPE c LENGTH 5.\n   CONSTANTS: gco_string TYPE string VALUE '0123456789ABCDEF'.\n   gv_target = EXACT #( gco_string+5(6) ).\n\nD. Exact P to P (compatible types)\n\nE. DATA: gv_target TYPE d.\n   CONSTANTS: gco_date TYPE d VALUE '20331233'.\n   gv_target = EXACT #( gco_date ).</code></pre>",
+    "options": [
+      "Pattern A (Decimal Loss)",
+      "Pattern B (Exact String to String)",
+      "Pattern C (Exact string to shorter C)",
+      "Pattern D (Compatible P)",
+      "Pattern E (Invalid Date)"
+    ],
+    "ans": [0, 2, 4],
+    "expl": "EXACT operatörü kayıplı atamalarda exception fırlatır: <br>A: 2/3 devirli sayıdır, P tipine tam sığmaz.<br>C: String (6 char) -> C (5 char) sığmaz.<br>E: Geçersiz tarih (Ay 12'den büyük olamaz)."
+  },
+  {
+    "id": 19,
+    "q": "Which of the following are parts of the definition of a new database table? (Select 2)",
+    "options": [
+      "Partitioning attribues",
+      "Extension",
+      "Semantic table attributes",
+      "Field list"
+    ],
+    "ans": [2, 3],
+    "expl": "Tablo tanımının temel parçaları <strong>Field list</strong> (alanlar) ve <strong>Semantic table attributes</strong> (teknik ayarlar, delivery class vb.) dir."
+  },
+  {
+    "id": 20,
+    "q": "Which of the following are features of Core Data Services? (Select 3)",
+    "options": [
+      "Inheritance",
+      "Associations",
+      "Annotations",
+      "Delegation",
+      "Structured Query Language (SQL)"
+    ],
+    "ans": [1, 2, 4],
+    "expl": "CDS özellikleri: <strong>Associations</strong> (ilişkiler), <strong>Annotations</strong> (metadata) ve <strong>SQL</strong> tabanlı olmasıdır. Inheritance ve Delegation CDS'in değil, OO ABAP'ın özellikleridir."
+  },
+  {
+    "id": 21,
+    "q": "What is the purpose of a foreign key relationship between two tables in the ABAP Dictionary?",
+    "options": [
+      "To document the relationship between the two tables",
+      "To ensure the integrity of data in the corresponding database tables",
+      "To create a corresponding foreign key relationship in the database",
+      "None of the above"
+    ],
+    "ans": [1],
+    "expl": "Temel amaç <strong>veri bütünlüğünü (data integrity)</strong> sağlamaktır. Veritabanına fiziksel constraint oluşturmaz, ABAP seviyesinde kontrol sağlar."
+  },
+  {
+    "id": 22,
+    "q": "When does SAP recommend to use a sorted or a hashed table respectively? (Select 2)",
+    "options": [
+      "A hashed table, when you read a single record and specify the complete key.",
+      "A hashed table, when you read a subset in a loop and specify a part of the key from the left without gaps.",
+      "A sorted table, when you read a subset in a loop and specify a part of the key from the left without gaps.",
+      "A sorted table, when you read a single record and specify non key fields."
+    ],
+    "ans": [0, 2],
+    "expl": "<strong>Hashed table:</strong> Tam anahtar ile tekil okuma için en hızlısıdır (O(1)).<br><strong>Sorted table:</strong> Kısmi anahtar (soldan boşluksuz) ile aralık okumaları veya döngüler için uygundur."
+  },
+  {
+    "id": 23,
+    "q": "Class has subclass sub. Which rules are valid for the sub constructor? (Select 2)",
+    "options": [
+      "The method signature can be changed.",
+      "Import parameters can only be evaluated after calling the constructor of super.",
+      "The constructor of super must be called before using any components of your own instance.",
+      "Events of your own instance cannot be raised before the registration of a handler in super."
+    ],
+    "ans": [0, 2],
+    "expl": "Subclass constructor'ının imzası değişebilir. Ancak kendi instance bileşenlerini kullanmadan önce mutlaka <code>super->constructor</code> çağrılmalıdır."
+  },
+  {
+    "id": 24,
+    "q": "In an Access Control Object, which clauses are used? (Select 3)",
+    "options": [
+      "Where",
+      "Grant",
+      "Return code",
+      "Define role",
+      "Revoke"
+    ],
+    "ans": [0, 1, 3],
+    "expl": "Access Control (DCL) içinde <strong>DEFINE ROLE</strong>, <strong>WHERE</strong> (koşul) ve <strong>GRANT</strong> (engelleme) kullanılabilir."
+  },
+  {
+    "id": 25,
+    "q": "What are some of the reasons that Core Data Services are preferable to the classical approach to data modeling? (Select 2)",
+    "options": [
+      "They implement code pushdown.",
+      "They avoid data transfer completely.",
+      "They transfer computational results to the application server.",
+      "They compute results on the application server."
+    ],
+    "ans": [0, 2],
+    "expl": "CDS, hesaplamaları veritabanında yaparak (Code Pushdown) sadece sonuçları uygulama sunucusuna transfer eder. Veri transferini tamamen engellemez ama optimize eder."
+  },
+  {
+    "id": 26,
+    "q": "Which of the following ABAP SQL statements are valid? (Select 2)",
+    "options": [
+      "SELECT ... FIELDS carrid, MAX( distance ) ... GROUP BY carrid",
+      "SELECT ... FIELDS carrid, MAX( distance ) ... (No Group By)",
+      "SELECT FIELDS MAX( distance ) ... (Only aggregates)",
+      "SELECT ... FIELDS carrid, airpfrom GROUP BY carrid (Missing airpfrom in group by)"
+    ],
+    "ans": [0, 2],
+    "expl": "Aggregate fonksiyon kullanıldığında, select listesindeki aggregate olmayan tüm alanlar <strong>GROUP BY</strong> clause'unda olmalıdır (A). Veya sadece aggregate alanlar seçilmelidir (C)."
+  },
+  {
+    "id": 27,
+    "q": "In ABAP SQL, which of the following retrieves the association field_Airline-Name of a CDS view?",
+    "options": [
+      "\\_Airline-Name",
+      "/_Airline Name",
+      "@_Airline-Name",
+      "\"_Airline Name"
+    ],
+    "ans": [0],
+    "expl": "ABAP SQL'de CDS association'larına erişmek için ters eğik çizgi kullanılır: <code>\\_Association-Field</code>."
+  },
+  {
+    "id": 28,
+    "q": "What RESTful Application Programming object contains only the fields required for a particular app?",
+    "options": [
+      "Database view",
+      "Metadata extension",
+      "Projection View",
+      "Data model view"
+    ],
+    "ans": [2],
+    "expl": "<strong>Projection View</strong>, servise veya UI'a özgü alanların seçildiği, veri modelinin özelleştirilmiş görünümüdür."
+  },
+  {
+    "id": 29,
+    "q": "In a RESTful Application Programming application, in which objects do you bind a CDS view to create a value help? (Select 3)",
+    "options": [
+      "Data model view",
+      "Behavior definition",
+      "Metadata Extension",
+      "Service Definition",
+      "Projection View"
+    ],
+    "ans": [0, 2, 4],
+    "expl": "Value help; Data Model View, Metadata Extension veya Projection View üzerinde anotasyonlarla bağlanabilir."
+  },
+  {
+    "id": 30,
+    "q": "What are advantages of using a field symbol for internal table row access? (Select 2)",
+    "options": [
+      "The field symbol can be reused for other programs.",
+      "A MODIFY statement to write changed contents back to the table is not required.",
+      "The row content is copied to the field symbol instead to a work area",
+      "Using a field symbol is faster than using a work area."
+    ],
+    "ans": [1, 3],
+    "expl": "Field symbol bellekteki adrese doğrudan referans verir (hızlıdır) ve yapılan değişiklikler anında tabloya yansır (MODIFY gerektirmez)."
+  },
+  {
+    "id": 31,
+    "q": "In what order are objects created to generate a RESTful Application Programming application?",
+    "options": [
+      "Data Model -> Table -> Service Def -> Binding",
+      "Binding -> Data Model -> Service Def -> Table",
+      "Table -> Data Model -> Service Def -> Binding",
+      "Service Def -> Binding -> Table -> Data Model"
+    ],
+    "ans": [2],
+    "expl": "Sıralama: 1. Database Table -> 2. Data Model (CDS) -> 3. Service Definition -> 4. Service Binding."
+  },
+  {
+    "id": 32,
+    "q": "In a program you find this source code,<pre><code>AUTHORITY-CHECK OBJECT '/DWO/TRVL' ID 'CNTRY' FIELD 'DE' ID 'ACTVT' FIELD '03'.</code></pre>Which of the following apply? (Select 2)",
+    "options": [
+      "If the user is authorized for 'CNTRY = DE' then the return code is always 0.",
+      "If the user is NOT authorized for 'CNTRY = DE' OR for 'ACTVT = 03' then the program will terminate.",
+      "If the user is authorized for 'CNTRY = DE' AND for 'ACTVT = 03' then the return code is 0.",
+      "AUTHORITY CHECK verifies whether a user is authorized for /DMO/TRVL with the listed field values."
+    ],
+    "ans": [2, 3],
+    "expl": "AUTHORITY-CHECK, belirtilen <strong>tüm</strong> alanlar için yetki varsa <code>sy-subrc = 0</code> döner. Programı sonlandırmaz, sadece kontrol eder."
+  },
+  {
+    "id": 33,
+    "q": "You are given the following information:<pre><code>SELECT SINGLE *\n FROM spfli\n WHERE carrid = 'LH' \n   AND connid = '1234'\n  INTO @DATA(ls_spfli).</code></pre>Table is large (1M+ rows), rarely accessed, and this is the only access. What settings should be set for the spfli database table? (Select 2)",
+    "options": [
+      "Storage Type to 'Column Store'",
+      "Load Unit to 'Column Loadable'",
+      "Storage Type to 'Row Store'",
+      "Load Unit to 'Page Loadable'"
+    ],
+    "ans": [0, 1],
+    "expl": "HANA veritabanında büyük tablolar için <strong>Column Store</strong> ve nadir erişim için <strong>Column Loadable</strong> ayarları önerilir."
+  },
+  {
+    "id": 34,
+    "q": "Which of the following actions cause an indirect change to a database table requiring a table conversion? (Select 2)",
+    "options": [
+      "Deleting a field from a structure that is included in the table definition.",
+      "Changing the field labels of a data element that is used in the table definition.",
+      "Shortening the length of a domain used in a data element that is used in the table definition.",
+      "Renaming a field in a structure that is included in the table definition"
+    ],
+    "ans": [0, 2],
+    "expl": "Tablonun fiziksel yapısını değiştiren işlemler (Include yapısından alan silmek, Domain boyunu kısaltmak) <strong>database conversion</strong> gerektirir."
+  },
+  {
+    "id": 35,
+    "q": "What are some properties of database tables? (Select 2)",
+    "options": [
+      "They store information in two dimensions.",
+      "They may have key fields.",
+      "They can have any number of key fields.",
+      "They can have relationships to other tables."
+    ],
+    "ans": [0, 3],
+    "expl": "Veritabanı tabloları satır ve sütunlardan oluşur (iki boyutlu) ve diğer tablolarla ilişkiler (foreign key) kurabilir."
+  },
+  {
+    "id": 36,
+    "q": "Which type of legacy code does SAP recommend you eliminate when you review modifications as part of an SAP S/4HANA system conversion? (Select 2)",
+    "options": [
+      "Code that supports a critical business process",
+      "Code that now is identical to a standard SAP object",
+      "Code that has less than 10% usage according to usage statistics",
+      "Code that can be redesigned as a key user extension"
+    ],
+    "ans": [1, 3],
+    "expl": "SAP, standart ile aynı hale gelmiş kodların ve basit extension ile yapılabilecek kodların temizlenmesini önerir."
+  },
+  {
+    "id": 37,
+    "q": "Why would you use Access Controls with CDS Views? (Select 2)",
+    "options": [
+      "Only the data corresponding to the user's authorization is transferred from the database to the application layer.",
+      "The system field sy-subrc is set, giving you the result of the authorization check",
+      "You do not have to remember to implement AUTHORITY CHECK statements.",
+      "All of the data from the data sources is loaded into your application automatically and filtered there."
+    ],
+    "ans": [0, 2],
+    "expl": "Access Control, veritabanı seviyesinde filtreleme yaparak gereksiz veri transferini önler ve manuel <code>AUTHORITY-CHECK</code> yazma ihtiyacını ortadan kaldırır."
+  },
+  {
+    "id": 38,
+    "q": "Which ABAP SQL clause allows the use of inline declarations?",
+    "options": [
+      "FROM",
+      "INTO CORRESPONDING FIELDS OF",
+      "INTO",
+      "FIELDS"
+    ],
+    "ans": [2],
+    "expl": "<code>INTO @DATA(...)</code> yapısı ile inline deklarasyon yapılır."
+  },
+  {
+    "id": 39,
+    "q": "In class `ZCL_CLASS_A`, you use the statement `DATA var TYPE ***`. What may stand in place of ***? (Select 2)",
+    "options": [
+      "The name of a type defined privately in class ZCL_CLASS_A",
+      "The name of a domain from the ABAP Dictionary",
+      "The name of a type defined privately in another class",
+      "The name of a data element from the ABAP Dictionary"
+    ],
+    "ans": [0, 3],
+    "expl": "Veri tipi olarak <strong>Data Element</strong> ve sınıfın kendi içindeki (private) tipler kullanılabilir. Domain doğrudan TYPE ile kullanılamaz, başka sınıfın private tipleri de görülemez."
+  },
+  {
+    "id": 40,
+    "q": "Which of the following integration frameworks have been released for ABAP cloud development? (Select 3)",
+    "options": [
+      "CDS Views",
+      "Business events",
+      "OData services",
+      "Business Add-ins (BAdIs)"
+    ],
+    "ans": [0, 1, 2],
+    "expl": "ABAP Cloud ortamında CDS, OData ve Business Events temel entegrasyon yapılarıdır."
+  },
+  {
+    "id": 41,
+    "q": "When processing an internal table with the statement LOOP AT itab... ENDLOOP, what system variable contains the current row number?",
+    "options": [
+      "sy-index",
+      "sy-subrc",
+      "sy-linno",
+      "sy-tabix"
+    ],
+    "ans": [3],
+    "expl": "Dahili tablolar üzerinde döngü kurarken anlık satır indeksi <strong>sy-tabix</strong> değişkeninde tutulur. <code>sy-index</code> DO/WHILE döngüleri içindir."
+  },
+  {
+    "id": 42,
+    "q": "For what kind of applications would you consider using on-stack developer extensions? (Select 2)",
+    "options": [
+      "Applications that provide APIs for side by side SAP BTP apps",
+      "Applications that access SAP S/4HANA data using complex SQL",
+      "Applications that integrate data from several different systems",
+      "Applications that run separate from SAP S/4HANA"
+    ],
+    "ans": [0, 1],
+    "expl": "On-stack extensions, S/4HANA verisine sıkı entegrasyon (karmaşık SQL) gerektiren veya dış dünyaya (BTP) API sağlayan senaryolar için uygundur."
+  },
+  {
+    "id": 43,
+    "q": "Refer to the exhibit.<pre><code>DATA: go_super TYPE REF TO lcl_super,\n      go_sub1  TYPE REF TO lcl_sub1.\n...\ngo_sub1 = CAST #( go_super ).\ngo_sub1->sub1_meth1(...).</code></pre>With which predicate condition can you ensure that the CAST will work?",
+    "options": [
+      "IS SUPPLIED",
+      "IS NOT INITIAL",
+      "IS INSTANCE OF",
+      "IS BOUND"
+    ],
+    "ans": [2],
+    "expl": "Downcast işleminin güvenli olması için <code>IS INSTANCE OF</code> ile nesnenin tipi kontrol edilmelidir."
+  },
+  {
+    "id": 44,
+    "q": "In ABAP SQL, which of the following can be assigned an alias? (Select 2)",
+    "options": [
+      "order criterion (from order by clause)",
+      "field (from field list)",
+      "database table",
+      "group criterion (from group by clause)"
+    ],
+    "ans": [1, 2],
+    "expl": "ABAP SQL'de tablolara ve seçilen alanlara (fields) alias verilebilir."
+  },
+  {
+    "id": 45,
+    "q": "<code>/DMO/I_Connection</code> is a CDS view. What variable type is connection full based on the following code?<pre><code>DATA connection_full TYPE /DMO/I_Connection.</code></pre>",
+    "options": [
+      "Simple variable",
+      "Structure",
+      "Internal Table"
+    ],
+    "ans": [1],
+    "expl": "CDS view'ler ABAP Dictionary'de bir <strong>Structure</strong> olarak temsil edilir. Bu tanımlama tek bir yapı oluşturur."
+  },
+  {
+    "id": 46,
+    "q": "Which of the following are valid sort operations for internal tables? (Select 3)",
+    "options": [
+      "SORT standard table ASCENDING.",
+      "SORT sorted table BY field ...",
+      "SORT standard table BY field1 field2.",
+      "SORT standard table.",
+      "SORT sorted table DESCENDING."
+    ],
+    "ans": [0, 2, 3],
+    "expl": "Sıralama (SORT) işlemleri sadece <strong>Standard</strong> tablolar için geçerlidir. Sorted tablolar zaten sıralıdır ve sıralamaları değiştirilemez."
+  },
+  {
+    "id": 47,
+    "q": "You want to provide a short description of the data definition for developers that will be attached to the database view. Which annotation would do this?",
+    "options": [
+      "@UI headerinto description label",
+      "@UI.badge.title.label",
+      "@EndUserText.quickInfo",
+      "@EndUserText.label"
+    ],
+    "ans": [3],
+    "expl": "<strong>@EndUserText.label</strong>, geliştiriciler ve araçlar için nesnenin kısa açıklamasını (etiketini) belirtir."
+  },
+  {
+    "id": 48,
+    "q": "Which statement can you use to change the contents of a row of data in an internal table?",
+    "options": [
+      "Append table",
+      "Modify table",
+      "Insert table",
+      "Update table"
+    ],
+    "ans": [1],
+    "expl": "İç tablodaki bir satırı değiştirmek için <strong>MODIFY</strong> komutu kullanılır."
+  },
+  {
+    "id": 49,
+    "q": "Refer to the exhibit.<pre><code>... SELECT FROM scarr\n    ASSOCIATION OF ONE TO MANY demo_cds_assoc_spfli AS _spfli\n...</code></pre>You want to expose <code>connid</code> from <code>_spfli</code>. Which statement is correct?",
+    "options": [
+      "_spfli.connid,",
+      "_spfli-connid/",
+      "spfli-connid,",
+      "_spfli.connid/"
+    ],
+    "ans": [0],
+    "expl": "CDS element listesinde association alanlarına erişim <strong>nokta (.)</strong> notasyonu ile yapılır: <code>_Association.Field</code>."
+  },
+  {
+    "id": 50,
+    "q": "Which of the following is a generic internal table type?",
+    "options": [
+      "SORTED TABLE",
+      "INDEX TABLE",
+      "STANDARD TABLE",
+      "HASHED TABLE"
+    ],
+    "ans": [1],
+    "expl": "<strong>INDEX TABLE</strong>, Standard ve Sorted tabloları kapsayan generic bir tiptir. Tek başına tablo tanımlamakta kullanılamaz (generic), parametre tipinde kullanılır."
+  },
+  {
+    "id": 51,
+    "q": "In RESTful Application Programming, which EML statement retrieves an object?",
+    "options": [
+      "Find entity",
+      "Select entity",
+      "Get entity",
+      "Read entity"
+    ],
+    "ans": [3],
+    "expl": "EML (Entity Manipulation Language) içinde veri okumak için <strong>READ ENTITY</strong> komutu kullanılır."
+  },
+  {
+    "id": 52,
+    "q": "For the assignment `gv_target = gv_source`. Which declarations work without truncation? (Select 2)",
+    "options": [
+      "Source: String -> Target: Char",
+      "Source: Char -> Target: String",
+      "Source: Date -> Target: String",
+      "Source: Packed -> Target: Packed (different decimals)"
+    ],
+    "ans": [1, 2],
+    "expl": "<strong>C -> String</strong> ve <strong>D (Date) -> String</strong> dönüşümleri her zaman güvenlidir ve veri kaybı (truncation) olmaz."
+  },
+  {
+    "id": 53,
+    "q": "You want to define a CDS view entity with an input parameter. Which types can you use? (Select 2)",
+    "options": [
+      "A built-in ABAP Dictionary type (e.g. abap.char)",
+      "A built-in ABAP type (e.g. c, i)",
+      "A data element",
+      "A component of an ABAP Dictionary structure"
+    ],
+    "ans": [0, 2],
+    "expl": "CDS parametrelerinde <strong>Data Element</strong> veya <strong>ABAP Dictionary Built-in Types</strong> (abap.char, abap.dats vb.) kullanılabilir."
+  },
+  {
+    "id": 54,
+    "q": "What RESTful Application Programming feature is used to ensure the uniqueness of a semantic key?",
+    "options": [
+      "Action",
+      "Validation",
+      "Determination",
+      "None of the above"
+    ],
+    "ans": [1],
+    "expl": "Veri tutarlılığı ve unique check (benzersizlik kontrolü) için <strong>Validation</strong> kullanılır."
+  },
+  {
+    "id": 55,
+    "q": "Which of the following are incomplete ABAP types? (Select 2)",
+    "options": [
+      "String",
+      "T",
+      "C",
+      "P"
+    ],
+    "ans": [2, 3],
+    "expl": "<strong>C</strong> (uzunluğu belirtilmemişse) ve <strong>P</strong> (uzunluk/ondalık belirtilmemişse) incomplete (eksik) tiplerdir. String ve T tipleri tam tanımlıdır."
+  },
+  {
+    "id": 56,
+    "q": "Setting a field to read-only in which object would make the field read-only in all applications of the RAP model?",
+    "options": [
+      "Service definition",
+      "Behavior definition",
+      "Projection view",
+      "Metadata extension"
+    ],
+    "ans": [1],
+    "expl": "<strong>Behavior Definition</strong> iş nesnesinin temel davranışını belirler. Burada yapılan <code>readonly</code> tanımı tüm projeksiyon ve servislerde geçerli olur."
+  },
+  {
+    "id": 57,
+    "q": "What is the sequence priority when evaluating a logical expression?",
+    "options": [
+      "1-2-3 (NOT-OR-AND)",
+      "3-1-2 (AND-NOT-OR)",
+      "1-3-2 (NOT-AND-OR)",
+      "2-1-3 (OR-NOT-AND)"
+    ],
+    "ans": [2],
+    "expl": "Mantıksal operatör önceliği: <strong>NOT > AND > OR</strong> şeklindedir."
+  },
+  {
+    "id": 58,
+    "q": "Which of the following results in faster access to internal tables? (Select 3)",
+    "options": [
+      "Sorted table, specifying the primary key completely.",
+      "Standard table, specifying the primary key partially.",
+      "Sorted table, specifying the primary key partially from left.",
+      "Hashed table, specifying the primary key partially.",
+      "Hashed table, specifying the primary key completely."
+    ],
+    "ans": [0, 2, 4],
+    "expl": "Hızlı Erişimler:<br>- <strong>Sorted:</strong> Tam anahtar veya soldan boşluksuz kısmi anahtar (Binary Search).<br>- <strong>Hashed:</strong> Sadece tam anahtar (Hash Algoritması)."
+  },
+  {
+    "id": 59,
+    "q": "Exhibit:<pre><code>INTERFACE if1. METHODS m1. ENDINTERFACE.\nCLASS cl1 DEFINITION. PUBLIC SECTION. INTERFACES if1. METHODS m2. ENDCLASS.\n 'in a method of another class DATA go_if1 TYPE REF TO if1. DATA go_cl1 TYPE REF TO cl1. \ngo_cl1 = NEW #( ... ). \ngo_if1 = go_cl1.</code></pre>What are valid statements? (Select 3)",
+    "options": [
+      "Use go_if1 = NEW cl1( ... ).",
+      "Use go_if1 = NEW #( ... ).",
+      "go_if1->m2( ... ) is valid.",
+      "go_if1->m1( ... ) is valid.",
+      "go_cl1->if1~m1( ... ) is valid."
+    ],
+    "ans": [0, 3, 4],
+    "expl": "Interface referansı sınıf instance'ını tutabilir (A). Interface referansı üzerinden interface metodları çağrılabilir (D). Sınıf referansı üzerinden interface metodu <code>~</code> ile çağrılır (E)."
+  },
+  {
+    "id": 60,
+    "q": "What would be the correct expression to change a given string value <code>'mr joe doe'</code> into <code>'JOE'</code> in an ABAP SQL field list?",
+    "options": [
+      "upper(left( 'mr joe doe', 6))",
+      "left(lower(substring( 'mr joe doe', 4, 3)), 3)",
+      "substring(upper('mr joe doe'), 4, 3)",
+      "substring(lower(upper( 'mr joe doe' ) ), 4, 3)"
+    ],
+    "ans": [2],
+    "expl": "1. <code>upper</code> ile metni büyüt: 'MR JOE DOE'<br>2. <code>substring</code> ile 4. karakterden başlayıp 3 karakter al: 'JOE'."
+  },
+  {
+    "id": 61,
+    "q": "What are some characteristics of secondary keys for internal tables? (Select 3)",
+    "options": [
+      "Secondary keys must be chosen explicitly when you actually read.",
+      "Multiple secondary keys are allowed for any kind of internal table.",
+      "Hashed secondary keys do NOT have to be unique.",
+      "Sorted secondary keys do NOT have to be unique.",
+      "Secondary keys can only be created for standard tables."
+    ],
+    "ans": [0, 1, 3],
+    "expl": "Secondary key kullanmak için <code>USING KEY</code> ile belirtmek gerekir. Her tablo tipine eklenebilir. Sorted secondary key'ler non-unique olabilir."
+  },
+  {
+    "id": 62,
+    "q": "You have attached a system field to an input parameter of a CDS view entity using <code>@Environment.systemField: #SYSTEM_LANGUAGE</code>. What are the effects? (Select 2)",
+    "options": [
+      "The value of sy-langu will be passed automatically (ABAP & View-on-View).",
+      "You can still override the default value with a value of your own.",
+      "Passed automatically only in ABAP, not in View-on-View.",
+      "It is no longer possible to pass your own value."
+    ],
+    "ans": [0, 1],
+    "expl": "Sistem değişkeni (sy-langu) otomatik olarak parametreye geçer ama istenirse manuel olarak ezilebilir (override edilebilir)."
+  },
+  {
+    "id": 63,
+    "q": "In RESTful Application Programming, a business object contains which parts? (Select 2)",
+    "options": [
+      "CDS view",
+      "Behavior definition",
+      "Authentication rules",
+      "Process definition"
+    ],
+    "ans": [0, 1],
+    "expl": "Bir RAP Business Object (BO), veri yapısını tanımlayan <strong>CDS View</strong> ve davranışları tanımlayan <strong>Behavior Definition</strong>'dan oluşur."
+  },
+  {
+    "id": 64,
+    "q": "In a subclass sub1 you want to redefine a component of a superclass super1. How do you achieve this? (Select 2)",
+    "options": [
+      "You add the clause REDEFINITION to the component in sub1.",
+      "You implement the redefined component for a second time in super1.",
+      "You implement the redefined component in sub1.",
+      "You add the clause REDEFINITION to the component in super1."
+    ],
+    "ans": [0, 2],
+    "expl": "Redefinition için: 1. Subclass tanımında <code>METHODS meth REDEFINITION</code> denir. 2. Subclass implementasyonunda metod yeniden yazılır."
+  },
+  {
+    "id": 65,
+    "q": "Which of the following string functions are predicate functions? (Select 2)",
+    "options": [
+      "find_any_not_of( )",
+      "contains_any_of( )",
+      "count_any_of( )",
+      "matches( )"
+    ],
+    "ans": [1, 3],
+    "expl": "Predicate fonksiyonlar True/False döner. <code>contains...</code> ve <code>matches</code> boolean döner. Diğerleri sayısal değer döner."
+  },
+  {
+    "id": 66,
+    "q": "After you created a database table in the RESTful Application Programming model, what do you create next?",
+    "options": [
+      "A metadata extension",
+      "A projection view",
+      "A data model view (Interface View)",
+      "A service definition"
+    ],
+    "ans": [2],
+    "expl": "Tablodan sonra ilk adım, temel veri modelini oluşturan <strong>Data Model View (Interface View)</strong> oluşturmaktır. Not: Sorularda bazen 'Projection View' cevabı da kafa karıştırabilir ama hiyerarşi Table -> Interface View -> Projection View şeklindedir."
+  },
+  {
+    "id": 67,
+    "q": "When you attempt to activate a CDS View Entity with a UNION where field names do not match, what happens?",
+    "options": [
+      "Activation error because the field names of the union do not match",
+      "Activation error because the field types of the union do not match",
+      "Activation error because the key fields of the union do not match",
+      "Activation successful"
+    ],
+    "ans": [0],
+    "expl": "CDS Union işleminde birleştirilen tüm select listelerindeki <strong>alan isimleri</strong> birebir aynı olmalıdır."
+  },
+  {
+    "id": 68,
+    "q": "What is true for using the expression `itab1 = corresponding #( itab2)`? (Select 2)",
+    "options": [
+      "Fields with the same name but with different types may be copied.",
+      "itab1 and itab2 must have at least one field name in common.",
+      "Fields with the same name and the same type will be copied.",
+      "itab1 and itab2 must have the same data type."
+    ],
+    "ans": [1, 2],
+    "expl": "Corresponding operatörü isim eşleşmesine bakar. En az bir ortak alan olmalı ve aynı isimdeki alanlar kopyalanır."
+  },
+  {
+    "id": 69,
+    "q": "Which of the following are ABAP Cloud Development Model rules? (Select 2)",
+    "options": [
+      "Use public SAP APIs and SAP extension points.",
+      "Build ABAP RESTful application programming model-based services.",
+      "Reverse modifications when a suitable public SAP API becomes available.",
+      "Build ABAP reports with either ABAP List Viewer (ALV) or SAP Fiori."
+    ],
+    "ans": [0, 1],
+    "expl": "ABAP Cloud kuralları: Sadece <strong>Public API</strong> kullanın."
+  },
+  {
+    "id": 70,
+    "q": "What will happen if method parameters act and exp are not equal in `cl_abap_unit_assert=>assert_equals`?",
+    "options": [
+      "The tested unit will automatically be appended to a default ABAP Test Cockpit Variant.",
+      "The tested unit cannot be transported.",
+      "The test will be aborted.",
+      "There will be a message in the test log."
+    ],
+    "ans": [3],
+    "expl": "Assertion başarısız olduğunda test durmaz (abort olmaz), sadece test günlüğüne (log) bir hata mesajı eklenir."
+  },
+  {
+    "id": 71,
+    "q": "When defining a METHOD, which parameter type can only have 1 value?",
+    "options": [
+      "IMPORTING",
+      "EXPORTING",
+      "CHANGING",
+      "RETURNING"
+    ],
+    "ans": [3],
+    "expl": "Bir metodun sadece <strong>bir tane RETURNING</strong> parametresi olabilir."
+  },
+  {
+    "id": 72,
+    "q": "What are some principles of encapsulation? (Select 2)",
+    "options": [
+      "Attributes can be changed through public class methods.",
+      "Attributes can be changed by the client program directly.",
+      "Attributes cannot be changed.",
+      "Attributes can only be changed by the class."
+    ],
+    "ans": [0, 3],
+    "expl": "Kapsülleme (Encapsulation) gereği, sınıfın verileri (attributes) dışarıya kapalı olmalı, sadece sınıfın kendi metodları veya public setter metodları ile değiştirilmelidir."
+  },
+  {
+    "id": 73,
+    "q": "Given the code: `CONSTANTS c_char TYPE c LENGTH 1 VALUE ' '. result = 2 / c_char.` Which exception will be raised?",
+    "options": [
+      "cx_sy_zerodivide",
+      "cx_sy_conversion_no_number",
+      "cx_sy_itab_line_not_found",
+      "None of the above"
+    ],
+    "ans": [1],
+    "expl": "Boşluk karakteri (' ') sayıya çevrilemez. Bölme işleminden önce dönüşüm yapıldığı için <strong>cx_sy_conversion_no_number</strong> hatası alınır."
+  },
+  {
+    "id": 74,
+    "q": "In which of the following functions can you use regular expressions? (Select 3)",
+    "options": [
+      "reverse",
+      "match",
+      "condense",
+      "matches",
+      "find"
+    ],
+    "ans": [1, 3, 4],
+    "expl": "Regex destekleyen fonksiyonlar: <strong>match</strong>, <strong>matches</strong> ve <strong>find</strong>."
+  },
+  {
+    "id": 75,
+    "q": "Which of the following custom code use cases falls under Tier 1 extensibility guidelines?",
+    "options": [
+      "Implement a user or customer exit, for example SAPMV45A.",
+      "Create a custom field on a DB table or CDS view via a released extension include.",
+      "Apply an SAP note with manual corrections.",
+      "Create a wrapper class around SAP objects that have not been released yet."
+    ],
+    "ans": [1],
+    "expl": "Tier 1 (Clean Core), SAP tarafından sağlanan resmi genişletme noktalarını (released extension include) kullanmayı kapsar."
+  },
+  {
+    "id": 76,
+    "q": "Which of the following is a technique for defining access controls?",
+    "options": [
+      "Inheritance",
+      "Redefinition",
+      "Singleton",
+      "Casting"
+    ],
+    "ans": [0],
+    "expl": "Access Control nesneleri <strong>Inheritance (Kalıtım)</strong> yoluyla diğer erişim kurallarını devralabilir."
+  },
+  {
+    "id": 77,
+    "q": "In CDS views, what do joins and associations have in common? (Select 2)",
+    "options": [
+      "An alias can be assigned to the data sources and to the fields in the field list.",
+      "They can expose an entire data source without listing individual fields.",
+      "The data sources are linked using an ON clause.",
+      "The field list can include fields of the linked table without specifying the name of the corresponding data source."
+    ],
+    "ans": [0, 2],
+    "expl": "Hem Join hem Association'da: 1. Tablolara Alias verilebilir. 2. Bağlantı <code>ON</code> koşulu ile kurulur."
+  },
+  {
+    "id": 78,
+    "q": "Constructors have which of the following properties? (Select 2)",
+    "options": [
+      "The constructor is automatically called during instantiation.",
+      "The constructor can have importing parameters.",
+      "The constructor must be the first method called by the client.",
+      "The constructor can have returning parameters."
+    ],
+    "ans": [0, 1],
+    "expl": "Constructor nesne oluşturulurken otomatik çağrılır ve IMPORTING parametreleri alabilir. RETURNING parametresi alamaz."
+  },
+  {
+    "id": 79,
+    "q": "Which of the following Core Data Services built-in functions returns a result of type INT4? (Select 2)",
+    "options": [
+      "dats_add_months",
+      "dats_is_valid",
+      "dats_add_days",
+      "dats_days_between"
+    ],
+    "ans": [2, 3],
+    "expl": "<strong>dats_days_between</strong> (gün farkı) ve <strong>dats_add_days</strong> (güne gün ekleme sonucu oluşan tarih değil, fonksiyonun teknik dönüşü bazı durumlarda hesaplama için kullanılır, ancak burada asıl INT dönen <code>days_between</code>dir. dats_add_days DATS döner. Soruda bir karışıklık olabilir ancak yaygın cevap anahtarı C ve D'dir)."
+  },
+  {
+    "id": 80,
+    "q": "In which sequence will the constructors be executed when creating an instance of a subclass?",
+    "options": [
+      "Sub Class -> Super Class -> ...",
+      "Class constructor Super -> Class constructor Sub -> Instance constructor Super -> Instance constructor Sub",
+      "Instance constructor Super -> Class constructor Super -> ...",
+      "Instance constructor Sub -> Instance constructor Super -> ..."
+    ],
+    "ans": [1],
+    "expl": "Önce Statik (Class) Constructorlar (Super -> Sub), sonra Instance Constructorlar (Super -> Sub) çalışır."
+  },
+  {
+    "id": 81,
+    "q": "Which of the following enforce ABAP Cloud rules? (Select 2)",
+    "options": [
+      "ABAP release contracts",
+      "ABAP platform reuse services",
+      "ABAP compiler",
+      "ABAP runtime checks"
+    ],
+    "ans": [2, 3],
+    "expl": "ABAP Cloud kuralları hem <strong>Compiler</strong> (derleme anında) hem de <strong>Runtime Checks</strong> (çalışma anında) tarafından denetlenir."
+  },
+  {
+    "id": 82,
+    "q": "Which of the following are personas under the SAP S/4HANA Cloud Extensibility Framework? (Select 2)",
+    "options": [
+      "Report Writer",
+      "Business Expert",
+      "Workflow Administrator",
+      "Citizen Developer"
+    ],
+    "ans": [1, 3],
+    "expl": "Extensibility framework rolleri: <strong>Business Expert</strong> (Key User Extensibility) ve <strong>Citizen Developer</strong>."
+  },
+  {
+    "id": 83,
+    "q": "Which language is used to add or change data of a business object in RAP?",
+    "options": [
+      "Data manipulation language",
+      "Entity manipulation language",
+      "Data modification language",
+      "RAP editing language"
+    ],
+    "ans": [1],
+    "expl": "RAP içinde BO verilerini değiştirmek için <strong>EML (Entity Manipulation Language)</strong> kullanılır."
+  },
+  {
+    "id": 84,
+    "q": "You want to document a global class with ABAP Doc. What do you need to consider? (Select 3)",
+    "options": [
+      "The documentation may contain tags like <strong>.",
+      "The documentation has to be positioned directly after the declarative statement.",
+      "The documentation can contain links to other repository object's documentation.",
+      "The documentation can be translated.",
+      "The documentation starts with !."
+    ],
+    "ans": [1, 3, 4],
+    "expl": "ABAP Doc: <code>!</code> ile başlar, deklarasyonun hemen önünde/arkasında yer alır ve çevrilebilir."
+  },
+  {
+    "id": 85,
+    "q": "Which of the following results in faster access to internal tables? (Select 3)",
+    "options": [
+      "In a sorted internal table, specifying the primary key completely.",
+      "In a standard internal table, specifying the primary key partially from the left without gaps.",
+      "In a sorted internal table, specifying the primary key partially from the left without gaps.",
+      "In a hashed internal table, specifying the primary key partially from the left without gaps.",
+      "In a hashed internal table, specifying the primary key completely."
+    ],
+    "ans": [0, 2, 4],
+    "expl": "Hızlı Erişim: Sorted (Tam veya Kısmi-Soldan), Hashed (Sadece Tam)."
+  },
+  {
+    "id": 86,
+    "q": "You have a CDS view with aliases <code>_Source1</code> and <code>Source2</code>. Which ON condition is correct?",
+    "options": [
+      "ON Z_SOURCE1.carrier_id = Z_SOURCE2.carrier_id",
+      "ON $projection.carrier_id = Z_SOURCE2.carrier_id",
+      "ON $projection.Carrier = _Source2.carrier_id",
+      "ON _Source1.carrier_id = Source2.carrier_id"
+    ],
+    "ans": [3],
+    "expl": "CDS join/association koşullarında tanımlanan <strong>Alias</strong> isimleri kullanılmalıdır."
+  },
+  {
+    "id": 87,
+    "q": "Which statements apply to the TRY-ENDTRY construct? (Select 3)",
+    "options": [
+      "A CATCH clause can be used as a handler for several exception classes.",
+      "A CLEANUP clause catches remaining exceptions.",
+      "All matching CATCH clauses are always executed.",
+      "A superclass in a CATCH clause catches exceptions of itself and of its subclasses.",
+      "CATCH clauses should be organized ascending from most specific to most general."
+    ],
+    "ans": [0, 3, 4],
+    "expl": "TRY-CATCH kuralları: Bir CATCH birden çok sınıfı tutabilir. Superclass subclass'ı yakalar. Sıralama Özelden -> Genele olmalıdır."
+  },
+  {
+    "id": 88,
+    "q": "What RAP object contains only the fields required for a particular app?",
+    "options": [
+      "Projection view",
+      "Metadata extension",
+      "Database view",
+      "Data model view"
+    ],
+    "ans": [0],
+    "expl": "<strong>Projection view</strong>."
+  },
+  {
+    "id": 89,
+    "q": "To which of the following rules must extensions in SAP S/4HANA, public cloud edition adhere? (Select 2)",
+    "options": [
+      "Build at the UX layer",
+      "Use predefined extension points",
+      "Use CI / CD pipelines",
+      "Use released APIs"
+    ],
+    "ans": [1, 3],
+    "expl": "Public Cloud kuralları: <strong>Predefined Extension Points</strong> ve <strong>Released APIs</strong> kullanımı."
+  },
+  {
+    "id": 90,
+    "q": "In a RAP business object, where is the validation implementation code contained?",
+    "options": [
+      "Local class",
+      "Function",
+      "Global class",
+      "Subroutine"
+    ],
+    "ans": [0],
+    "expl": "RAP Validation ve Determination kodları Behavior Pool içindeki <strong>Local Class</strong>'larda (LHC) bulunur."
+  },
+  {
+    "id": 91,
+    "q": "Which statement creates a reference variable for class CL_VEHICLE?",
+    "options": [
+      "TYPES lo_vehicle TYPE cl_vehicle.",
+      "DATA lo_vehicle TYPE REF OF cl_vehicle.",
+      "DATA lo_vehicle LIKE REF cl_vehicle.",
+      "DATA lo_vehicle TYPE REF TO cl_vehicle."
+    ],
+    "ans": [3],
+    "expl": "Referans değişkeni tanımlama syntax'ı: <code>DATA var TYPE REF TO class</code>."
+  },
+  {
+    "id": 92,
+    "q": "You select a field flight_date with type DATS (YYYYMMDD). Which expressions return the 2-digit month? (Select 2)",
+    "options": [
+      "substring( flight_date, 5, 2 )",
+      "right( left( flight_date, 6 ), 2 )",
+      "left( right( flight_date, 6 ), 2 )",
+      "substring( flight_date, 4, 2 )"
+    ],
+    "ans": [0, 1],
+    "expl": "Ay 5. ve 6. karakterdedir.<br>A: Substring(offset 4 yani 5.karakter, 2 karakter).<br>B: Left 6 (YYYYMM) -> Right 2 (MM)."
+  },
+  {
+    "id": 93,
+    "q": "What can be translated? (Select 3)",
+    "options": [
+      "Content of a string variable",
+      "Data element texts",
+      "Text literal",
+      "Message class",
+      "Text symbol"
+    ],
+    "ans": [1, 3, 4],
+    "expl": "Çevrilebilir nesneler: Data element textleri, Message class mesajları ve Text sembolleri."
+  },
+  {
+    "id": 94,
+    "q": "Which function call produces the string 'LORE_IPSUM_FACTUM'?",
+    "options": [
+      "from_mixed( val = 'LorelpsumFactum' sep = '_' )",
+      "condense( to_upper( 'LorelpsumFactum' ) )",
+      "to_upper( condense( 'LorelpsumFactum' ) )",
+      "to_mixed( val = 'LorelpsumFactum' sep = '_' )"
+    ],
+    "ans": [0],
+    "expl": "<strong>from_mixed</strong> fonksiyonu CamelCase metni ayırıcı kullanarak (sep) dönüştürür."
+  },
+  {
+    "id": 95,
+    "q": "In a CDS view, where can a value help be defined?",
+    "options": [
+      "In the SQL console",
+      "In an annotation",
+      "In an association",
+      "In a view definition"
+    ],
+    "ans": [1],
+    "expl": "Value help, <code>@Consumption.valueHelpDefinition</code> <strong>anotasyonu</strong> ile tanımlanır."
+  },
+  {
+    "id": 96,
+    "q": "Which of the following ABAP SQL aggregate functions accept an ABAP SQL expression (e.g., f1 + f2) as input? (Select 2)",
+    "options": [
+      "avg()",
+      "max()",
+      "count(*)",
+      "sum()"
+    ],
+    "ans": [0, 3],
+    "expl": "<code>AVG</code> ve <code>SUM</code> fonksiyonları aritmetik ifadeleri kabul eder."
+  },
+  {
+    "id": 97,
+    "q": "When you create an exception class, what does SAP recommend you do? (Select 3)",
+    "options": [
+      "Define corresponding public attributes to pass values.",
+      "Inherit from cx_static_check for warnings.",
+      "Inherit from cx_static_check to check handling at compile time.",
+      "Inherit from cx_no_check.",
+      "Implement interface if_t100_message for message class usage."
+    ],
+    "ans": [0, 2, 4],
+    "expl": "Önerilenler: Public attribute kullanmak, <code>cx_static_check</code>'ten türetmek (zorunlu yakalama kontrolü) ve <code>if_t100_message</code> implemente etmek."
+  },
+  {
+    "id": 98,
+    "q": "Given code with REDUCE... Which statements are correct? (Select 2)",
+    "options": [
+      "row is a predefined name and cannot be changed.",
+      "This REDUCE expression may produce a result of multiple rows.",
+      "Components of h_structure_variable will be copied to same-named components of structure_variable.",
+      "The REDUCE expression creates a loop over source_itab."
+    ],
+    "ans": [2, 3],
+    "expl": "REDUCE bir döngü kurar ve sonuçta birikimli yapıyı döndürür. İsim eşleşmesi ile kopyalama yapılır."
+  },
+  {
+    "id": 99,
+    "q": "What is the syntax to access component carrier_name of structure connection?",
+    "options": [
+      "connection>carrier_name",
+      "connection/carrier_name",
+      "connection-carrier_name",
+      "connection=>carrier_name"
+    ],
+    "ans": [2],
+    "expl": "Structure bileşenine erişim <strong>tire (-)</strong> işareti ile yapılır."
+  },
+  {
+    "id": 100,
+    "q": "Which of the following are valid ABAP SQL type conversions? (Select 3)",
+    "options": [
+      "CAST( 'field_f1' AS CHAR( 8 ) )",
+      "CAST( field_f2 AS N( 8 ) )",
+      "CAST( 29 AS INT8 )",
+      "CAST( field_f5 AS DEC( 15, 2 ) )",
+      "CAST( 34 AS I )"
+    ],
+    "ans": [0, 2, 3],
+    "expl": "Geçerli CAST tipleri: <strong>CHAR</strong>, <strong>DEC</strong>, <strong>I</strong> (Integer), FLTP vb. N (Numc) ve INT8 geçerli SQL cast tipleri değildir."
+  },
+  {
+    "id": 101,
+    "q": "What are some necessary parts of the singleton pattern? (Select 3)",
+    "options": [
+      "Class creation is set to CREATE PRIVATE.",
+      "Constructor visibility is set to private.",
+      "Class method to create the singleton instance is set to private.",
+      "Static attribute to store address of the singleton instance must exist.",
+      "Class method to create the singleton instance must exist."
+    ],
+    "ans": [0, 3, 4],
+    "expl": "Singleton Parçaları: 1. <code>CREATE PRIVATE</code>, 2. Instance tutan <code>Static Attribute</code>, 3. Instance döndüren <code>Static Public Method</code>."
+  },
+  {
+    "id": 102,
+    "q": "Which models must you use to develop artifacts that expose ABAP-based backend services based on semantic data models? (Select 2)",
+    "options": [
+      "ABAP RESTful Application Programming Model",
+      "ABAP Cloud Development Model",
+      "Cloud Application Programming Model",
+      "ABAP Programming Model for SAP Fiori"
+    ],
+    "ans": [0, 3],
+    "expl": "ABAP tabanlı semantik model servisleri için <strong>RAP</strong> (Güncel) ve <strong>ABAP Programming Model for SAP Fiori</strong> (Eski/Klasik) kullanılır."
+  },
+  {
+    "id": 103,
+    "q": "How do you specify LTCL_TEST as a test class?",
+    "options": [
+      "Use the addition FOR TESTING in the class declaration of LTCL_TEST.",
+      "Create a parameter in the SETUP method of LTCL_TEST and set its value to “Test”.",
+      "Use the addition FOR TESTING: LTCL_TEST in the class declaration of ZCL_ORDINARY.",
+      "Create LTCL_TEST in a special package that is reserved for test classes."
+    ],
+    "ans": [0],
+    "expl": "Sınıf tanımına <code>CLASS ... DEFINITION FOR TESTING</code> eklenir."
+  },
+  {
+    "id": 104,
+    "q": "What are some features of the current ABAP programming language? (Select 2)",
+    "options": [
+      "A data object’s type can change at runtime.",
+      "Keywords are case-sensitive.",
+      "The code is expression-based.",
+      "It has built-in database access."
+    ],
+    "ans": [2, 3],
+    "expl": "Modern ABAP <strong>Expression-based</strong> (ifade tabanlı) bir dildir ve <strong>Built-in Database Access</strong> (Open SQL) özelliğine sahiptir."
+  },
+  {
+    "id": 105,
+    "q": "Given a CDS View Entity without a KEY definition. What happens on activation?",
+    "options": [
+      "Activation error due to no key defined",
+      "Activation error due to missing annotation “@AbapCatalog.sqlViewName”",
+      "Activation will be successful",
+      "Activation error due to missing annotation “@AccessControl.authorizationCheck”"
+    ],
+    "ans": [0],
+    "expl": "CDS View Entity tanımlarında en az bir <strong>KEY</strong> alanı olmak zorundadır."
+  },
+  {
+    "id": 106,
+    "q": "What can you do in SAP S/4HANA Cloud, public edition? (Select 2)",
+    "options": [
+      "Use SAP-released extension points",
+      "Use ABAP Development Tools in Eclipse (ADT)",
+      "Modify SAP objects",
+      "Use Web Dynpros"
+    ],
+    "ans": [0, 1],
+    "expl": "Public Cloud'da <strong>Released Extension Points</strong> kullanılır ve geliştirme <strong>ADT (Eclipse)</strong> ile yapılır."
+  },
+  {
+    "id": 107,
+    "q": "Which of the following are reasons to use the side-by-side extensibility pattern? (Select 3)",
+    "options": [
+      "An extension is managed independently from SAP S/4HANA",
+      "An extension uses its own data model with occasional consumption of data in SAP S/4HANA",
+      "An extension implements reactive (event-based) process extensions",
+      "An extension runs in the same logical unit of work (LUW) as an SAP S/4HANA application",
+      "An extension enhances an existing SAP Fiori UI"
+    ],
+    "ans": [0, 1, 2],
+    "expl": "Side-by-side extensibility: Bağımsızdır, kendi veri modeli vardır ve event-based (reaktif) çalışabilir. Aynı LUW'da çalışmaz."
+  },
+  {
+    "id": 108,
+    "q": "Foreign key relationship: A department may have any number of employees (including none). What is the cardinality?",
+    "options": [
+      "[0..*,1]",
+      "(0..1,1)",
+      "(1..1,1)",
+      "(1..,1)"
+    ],
+    "ans": [0],
+    "expl": "Hiç olmayabilir veya çok olabilir: <code>[0..*]</code> veya <code>[0..n]</code>."
+  },
+  {
+    "id": 109,
+    "q": "How can you execute test classes? (Select 3)",
+    "options": [
+      "As a mass test when executing an ABAP Test Cockpit (ATC) check variant.",
+      "As a mass test when releasing a transport request.",
+      "Interactively by calling function “Run as a unit test” from within the tested object.",
+      "Interactively by calling function “Run as a unit test” from within the test class.",
+      "Interactively during the release of transport request."
+    ],
+    "ans": [0, 2, 3],
+    "expl": "Testler; ATC ile toplu olarak, ya da ADT üzerinden interaktif olarak (Sınıftan veya Test Edilen Objeden) çalıştırılabilir."
+  },
+  {
+    "id": 110,
+    "q": "What is a class defined as part of an ABAP program called?",
+    "options": [
+      "Local variable",
+      "Global variable",
+      "Global class",
+      "Local class"
+    ],
+    "ans": [3],
+    "expl": "Bir programın (Report, Function Group vb.) içinde tanımlanan sınıfa <strong>Local Class</strong> denir."
+  },
+  {
+    "id": 111,
+    "q": "How do you make class sub1 a subclass of class super1?",
+    "options": [
+      "In super1 use clause \"sub1 REDEFINITION\" in the DEFINITION part.",
+      "In sub1 use clause \"INHERITING FROM super1\" in the IMPLEMENTATION part.",
+      "In sub1 use clause \"INHERITING FROM super1\" in the DEFINITION part.",
+      "In super1 use clause \"sub1 REDEFINITION\" in the IMPLEMENTATION part."
+    ],
+    "ans": [2],
+    "expl": "Subclass tanımında: <code>CLASS sub1 DEFINITION INHERITING FROM super1.</code> kullanılır."
+  },
+  {
+    "id": 112,
+    "q": "To give authorization to users, in which order are the artifacts used?",
+    "options": [
+      "Auth Object -> IAM App -> Business Catalog -> Business Role -> Business User",
+      "IAM App -> Business Role -> Auth Object -> ...",
+      "IAM App -> Business User -> ...",
+      "IAM App -> Business Catalog -> ... Role -> User -> Auth Obj"
+    ],
+    "ans": [0],
+    "expl": "Sıralama: Yetki Nesnesi -> IAM Uygulaması -> Katalog -> Rol -> Kullanıcı."
+  },
+  {
+    "id": 113,
+    "q": "Which of the following types of Core Data Services Views can be used at the consumption layer? (Select 3)",
+    "options": [
+      "Table Function",
+      "Transactional Interface",
+      "Transactional Query",
+      "Analytical Query",
+      "Hierarchy"
+    ],
+    "ans": [0, 3, 4],
+    "expl": "Consumption katmanında <strong>Table Function</strong>, <strong>Analytical Query</strong> ve <strong>Hierarchy</strong> kullanılabilir."
+  },
+  {
+    "id": 114,
+    "q": "In a subclass sub1, you want to redefine a component of a superclass super1. How do you achieve this? (Select 2)",
+    "options": [
+      "You add the clause REDEFINITION to the component in sub1 definition.",
+      "You implement the redefined component for a second time in super1.",
+      "You add the clause REDEFINITION to the component in super1.",
+      "You implement the redefined component in sub1 implementation."
+    ],
+    "ans": [0, 3],
+    "expl": "Subclass Definition'da <code>METHODS m REDEFINITION</code> eklenir ve Subclass Implementation'da kod yazılır."
+  },
+  {
+    "id": 115,
+    "q": "What are some features of ABAP SQL? (Select 2)",
+    "options": [
+      "It is first processed by the Database Interface.",
+      "It is integrated in the ABAP programming language.",
+      "It is directly executed on the HANA database.",
+      "It is only valid on the HANA database."
+    ],
+    "ans": [0, 1],
+    "expl": "ABAP SQL dile entegredir ve veritabanına gitmeden önce <strong>DB Interface</strong> tarafından işlenir (bu sayede DB bağımsızdır)."
+  },
+  {
+    "id": 116,
+    "q": "When you join two database tables, which of the following rules applies to the database fields you use in the join?",
+    "options": [
+      "They must be at the same position in their table.",
+      "They must always have an alias name.",
+      "They must have the same name.",
+      "They must be compared with an ON condition."
+    ],
+    "ans": [3],
+    "expl": "Join işlemi için alanların <strong>ON</strong> koşulunda karşılaştırılması gerekir."
+  },
+  {
+    "id": 117,
+    "q": "In RESTful Application Programming, a business object contains which parts? (Select 2)",
+    "options": [
+      "Process definition",
+      "Behavior definition",
+      "CDS view",
+      "Authentication rules"
+    ],
+    "ans": [1, 2],
+    "expl": "RAP Business Object = <strong>CDS View</strong> (Structure) + <strong>Behavior Definition</strong> (Behavior)."
+  },
+  {
+    "id": 118,
+    "q": "What describes multi-column internal tables?",
+    "options": [
+      "They use one incomplete data type.",
+      "They are based on a structured row type.",
+      "They must contain nested components.",
+      "They use one complete data type."
+    ],
+    "ans": [1],
+    "expl": "Çok sütunlu iç tablolar <strong>Structured Row Type</strong> (Yapısal satır tipi) kullanır."
+  },
+  {
+    "id": 119,
+    "q": "Which of the following are reasons that SAP recommends developing Core Data Services view entities as opposed to classic CDS views? (Select 2)",
+    "options": [
+      "Automated client handling",
+      "Simplified syntax check",
+      "Simpler and stricter syntax",
+      "Elimination of the need for a database view"
+    ],
+    "ans": [2, 3],
+    "expl": "View Entity avantajları: Daha katı/temiz syntax ve ekstra bir DDIC Database View nesnesine ihtiyaç duymaması."
+  },
+  {
+    "id": 120,
+    "q": "You want to extract date information using `EXTRACT_YEAR( f_info )`. What can be the types of f_info? (Select 3)",
+    "options": [
+      "TIMS",
+      "UTCLONG",
+      "TIMESTAMP",
+      "DATS",
+      "TIMN"
+    ],
+    "ans": [1, 2, 3],
+    "expl": "Tarih çıkarma fonksiyonları <strong>DATS</strong>, <strong>TIMESTAMP</strong> ve <strong>UTCLONG</strong> tipleriyle çalışır."
+  },
+  {
+    "id": 121,
+    "q": "Client wants to extend an SAP table marked as `#RESTRICTED`. Can they extend it?",
+    "options": [
+      "Yes, if Standard ABAP.",
+      "No, the database table cannot be extended since it has not been extensibility enabled by SAP.",
+      "Yes, once enabled by customer.",
+      "Yes, if ABAP Cloud."
+    ],
+    "ans": [1],
+    "expl": "SAP tarafından <strong>Extensibility Enabled</strong> yapılmamış (#RESTRICTED) tablolar genişletilemez."
+  },
+  {
+    "id": 122,
+    "q": "Which of the following rules apply for dividing with ABAP SQL? (Select 3)",
+    "options": [
+      "The division operator “/” accepts decimal input.",
+      "Numeric function division( numerator, denominator, decimal places ) accepts decimal input.",
+      "Numeric function div( numerator, denominator ) expects only integer input.",
+      "The division operator “/” accepts floating point input.",
+      "Numeric function division( numerator, denominator, decimal places ) accepts floating point input."
+    ],
+    "ans": [1, 2, 4],
+    "expl": "ABAP SQL'de <code>/</code> operatörü yoktur. <code>div()</code> integer böler, <code>division()</code> decimal ve float kabul eder."
+  },
+  {
+    "id": 123,
+    "q": "In a booking record, how can you calculate the difference in days between two dates?",
+    "options": [
+      "data(gv_diff_days) = conv d( gs_booking-flight_date - gs_booking-order_date ).",
+      "data(gv_diff_days) = gs_booking-flight_date - gs_booking-order_date.",
+      "data(gv_diff_days) = gs_booking-order_date - gs_booking-flight_date.",
+      "data(gv_diff_days) = conv d( gs_booking-order_date - gs_booking-flight_date )."
+    ],
+    "ans": [1],
+    "expl": "İki tarih (dats) birbirinden çıkarıldığında sonuç gün sayısı (integer) olur. Dönüştürme gerekmez."
+  },
+  {
+    "id": 124,
+    "q": "Which field is defined incorrectly?<pre><code>DEFINE TABLE demo_table {\n  KEY field1 : REFERENCE TO abap.clnt(3);\n  KEY field2 : abap.char(1332);\n...</code></pre>",
+    "options": [
+      "field2 (char 1332)",
+      "field3",
+      "field4",
+      "field1"
+    ],
+    "ans": [0],
+    "expl": "<strong>field2</strong>: Char alanı için 1332 çok büyük bir değerdir ve key alanı olması muhtemel performans/limit sorunlarına yol açar (HANA limitleri)."
+  },
+  {
+    "id": 125,
+    "q": "You want to join T_CARRIER and T_CONNECTIONS to retrieve ALL carriers, whether they have connections or not. (Select 2)",
+    "options": [
+      "SELECT FROM t_carrier INNER JOIN t_connections ...",
+      "SELECT FROM t_carrier LEFT OUTER JOIN t_connections ...",
+      "SELECT FROM t_carrier LEFT INNER JOIN t_connections ...",
+      "SELECT FROM t_connections RIGHT OUTER JOIN t_carrier ..."
+    ],
+    "ans": [1, 3],
+    "expl": "Tüm carrier'ları almak için: Carrier <strong>LEFT OUTER JOIN</strong> Connections veya Connections <strong>RIGHT OUTER JOIN</strong> Carrier kullanılmalıdır."
+  },
+  
+  {
+    "id": 126,
+    "q": "Which ways are syntactically correct to provide a value for a CDS parameter? (Select 2)<pre><code>SELECT * FROM demo_cds_param_view_entity( p_date = ... )</code></pre>",
+    "options": [
+      "Literal: '20230101'",
+      "Host Variable: @(cl_abap_context_info=>get_system_date( ) )",
+      "Number: 20230101",
+      "Session Variable: :$session.system_date"
+    ],
+    "ans": [0, 1],
+    "expl": "Parametreye değer geçerken <strong>Literal</strong> ('Değer') veya <strong>Host Variable/Expression</strong> (@ile başlayan) kullanılabilir. Session variable ABAP SQL tarafında <code>:</code> ile değil doğrudan parametre içinde kullanılamaz."
+  },
+  
+    
+    {
+    "id": 127,
+    "q": "You want to enhance a business object to retrive a default company code that is selected form the databasse.\nWhich extensions type must you use?",
+    "options": [
+      "Validation",
+      "Action",
+      "Determination",
+      "Assocation"
+    ],
+    "ans": [2],
+    "expl": "SAP.COM Örnek Soruları"
+  },
+  
+    
+      {
+    "id": 128,
+    "q": "In the RESTful Application Programming model where do you implement non-standart operations for customized business-logic behavior?",
+    "options": [
+      "In a Determination",
+      "In a validation",
+      "In a Action",
+      "Assocation"
+    ],
+    "ans": [2],
+    "expl": "SAP.COM Örnek Soruları"
+  },
+  
+          {
+    "id": 129,
+    "q": "What can you add to business object in the ABAP RESTful application Programming Model?",
+    "options": [
+      "Method overwrite",
+      "Field",
+      "Action",
+      "İmplicit enhancement"
+    ],
+    "ans": [1, 2],
+    "expl": "SAP.COM Örnek Soruları"
+  },
+  
+   {
+    "id": 130,
+    "q": "What do you have consider when working with interfaces?",
+    "options": [
+      "Implementing classes must declare the interface in their public section.",
+      "Implementing classes may declare the interface in any visibility section.",
+      "Instance methods are not implemented in an interface.",
+      "Static methods can be implemented in an interface.",
+      "Static methods, instance methods, static events, and instance events are possible interface components."
+    ],
+    "ans": [0, 2, 4],
+    "expl": "SAP.COM Örnek Soruları"
+  }
+];
+
+// --- DURUM YÖNETİMİ ---
+let currentQuestionIndex = 0;
+// Her soru için durum: { status: 'pending' | 'correct' | 'wrong', selected: [] }
+let quizState = Array(130).fill(null).map(() => ({ status: 'pending', selected: [] }));
+
+// DOM Elementleri
+const navGrid = document.getElementById("nav-grid");
+const qHeader = document.getElementById("q-header");
+const questionTextEl = document.getElementById("question-text");
+const optionsContainer = document.getElementById("options-container");
+const explanationBox = document.getElementById("explanation-box");
+const explanationText = document.getElementById("explanation-text");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
+const checkBtn = document.getElementById("check-btn");
+const totalCorrectEl = document.getElementById("total-correct");
+const totalWrongEl = document.getElementById("total-wrong");
+const scorePercentEl = document.getElementById("score-percent");
+
+// --- BAŞLATMA ---
+function init() {
+    renderNavGrid();
+    loadQuestion(0);
+}
+
+// Navigasyon Gridini Oluştur
+function renderNavGrid() {
+    navGrid.innerHTML = "";
+    quizState.forEach((state, index) => {
+        const item = document.createElement("div");
+        item.className = "nav-item";
+        item.innerText = index + 1;
+        item.id = `nav-item-${index}`;
+        
+        if (state.status === 'correct') item.classList.add("correct");
+        else if (state.status === 'wrong') item.classList.add("wrong");
+        
+        if (index === currentQuestionIndex) item.classList.add("active");
+
+        item.onclick = () => loadQuestion(index);
+        navGrid.appendChild(item);
+    });
+}
+
+// Nav Grid Güncelle (Sadece ilgili item)
+function updateNavGridItem(index) {
+    const item = document.getElementById(`nav-item-${index}`);
+    if (!item) return;
+
+    item.className = "nav-item"; // Sıfırla
+    if (quizState[index].status === 'correct') item.classList.add("correct");
+    else if (quizState[index].status === 'wrong') item.classList.add("wrong");
+    
+    if (index === currentQuestionIndex) item.classList.add("active");
+}
+
+// Soruyu Yükle
+function loadQuestion(index) {
+    // Eski aktifliği kaldır
+    const prevItem = document.getElementById(`nav-item-${currentQuestionIndex}`);
+    if(prevItem) prevItem.classList.remove("active");
+
+    currentQuestionIndex = index;
+    const q = rawQuestions[index];
+    const state = quizState[index];
+
+    // Yeni aktifliği ekle
+    updateNavGridItem(index);
+
+    // UI Güncelle
+    qHeader.innerText = `SORU ${index + 1} / ${rawQuestions.length}`;
+    
+    let qContent = `<h2>${q.q}</h2>`;
+    if(q.ans.length > 1) qContent += `<span class="badge-info">Çoklu Seçim (${q.ans.length} adet)</span>`;
+    questionTextEl.innerHTML = qContent;
+
+    // Buton Durumları
+    prevBtn.disabled = (index === 0);
+    nextBtn.disabled = (index === rawQuestions.length - 1);
+
+    // Şıklar
+    renderOptions(q, state);
+
+    // Cevaplanmış mı?
+    if (state.status !== 'pending') {
+        showExplanation(q);
+        checkBtn.style.display = "none";
+    } else {
+        explanationBox.style.display = "none";
+        checkBtn.style.display = "block";
+    }
+}
+
+function renderOptions(q, state) {
+    optionsContainer.innerHTML = "";
+    q.options.forEach((opt, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerHTML = `<span class="option-marker">${String.fromCharCode(65 + i)}</span> <div>${opt}</div>`;
+        
+        // Eğer daha önce seçilmişse işaretle
+        if (state.selected.includes(i)) {
+            btn.classList.add("selected");
+        }
+
+        // Eğer soru zaten cevaplanmışsa renkleri boya ve disable et
+        if (state.status !== 'pending') {
+            btn.disabled = true;
+            if (q.ans.includes(i)) {
+                if (state.selected.includes(i)) btn.classList.add("correct");
+                else btn.classList.add("missed");
+            } else if (state.selected.includes(i)) {
+                btn.classList.add("wrong");
+            }
+        } else {
+            // Cevaplanmamışsa tıklama olayı
+            btn.onclick = () => toggleSelection(i, q.ans.length > 1);
+        }
+        
+        optionsContainer.appendChild(btn);
+    });
+}
+
+function toggleSelection(optIndex, isMulti) {
+    const state = quizState[currentQuestionIndex];
+    if (isMulti) {
+        if (state.selected.includes(optIndex)) {
+            state.selected = state.selected.filter(i => i !== optIndex);
+        } else {
+            state.selected.push(optIndex);
+        }
+    } else {
+        state.selected = [optIndex];
+    }
+    renderOptions(rawQuestions[currentQuestionIndex], state);
+}
+
+function checkAnswer() {
+    const state = quizState[currentQuestionIndex];
+    if (state.selected.length === 0) {
+        alert("Lütfen en az bir şık işaretleyin.");
+        return;
+    }
+
+    const q = rawQuestions[currentQuestionIndex];
+    const correctAns = q.ans.sort().toString();
+    const userAns = state.selected.sort().toString();
+
+    // Durumu güncelle
+    state.status = (correctAns === userAns) ? 'correct' : 'wrong';
+
+    // UI Güncelle
+    updateScore();
+    updateNavGridItem(currentQuestionIndex);
+    loadQuestion(currentQuestionIndex); // Yeniden render et (renklerle)
+}
+
+function updateScore() {
+    const correct = quizState.filter(s => s.status === 'correct').length;
+    const wrong = quizState.filter(s => s.status === 'wrong').length;
+    const total = correct + wrong;
+    
+    totalCorrectEl.innerText = correct;
+    totalWrongEl.innerText = wrong;
+    scorePercentEl.innerText = total > 0 ? Math.round((correct / total) * 100) : 0;
+}
+
+function showExplanation(q) {
+    explanationText.innerHTML = q.expl || "Açıklama mevcut değil.";
+    explanationBox.style.display = "block";
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < rawQuestions.length - 1) {
+        loadQuestion(currentQuestionIndex + 1);
+    }
+}
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) {
+        loadQuestion(currentQuestionIndex - 1);
+    }
+}
+
+// --- YENİ EKLENEN FONKSİYONLAR ---
+
+function finishExam() {
+    // Hesaplamalar
+    const correctCount = quizState.filter(s => s.status === 'correct').length;
+    const wrongCount = quizState.filter(s => s.status === 'wrong').length;
+    const totalAnswered = correctCount + wrongCount;
+    const emptyCount = rawQuestions.length - totalAnswered;
+    
+    const percent = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+
+    // Elementleri doldur
+    document.getElementById('final-correct').innerText = correctCount;
+    document.getElementById('final-wrong').innerText = wrongCount;
+    document.getElementById('final-empty').innerText = emptyCount;
+    document.getElementById('final-score-percent').innerText = `%${percent}`;
+
+    const msgEl = document.getElementById('final-message');
+    const iconEl = document.getElementById('result-icon');
+    const wrongSection = document.getElementById('wrong-answers-section');
+    const wrongGrid = document.getElementById('wrong-answers-grid');
+
+    // Başarı Durumu
+    if (percent >= 70) {
+        msgEl.innerHTML = "<span style='color:var(--success)'>TEBRİKLER! SERTİFİKA KAZANDINIZ! 🏆</span>";
+        iconEl.innerHTML = "🎉";
+    } else {
+        msgEl.innerHTML = "<span style='color:var(--danger)'>MAALESEF BAŞARISIZ. TEKRAR DENE! 😔</span>";
+        iconEl.innerHTML = "⚠️";
+    }
+
+    // Yanlış Cevapları Listele
+    if (wrongCount > 0) {
+        wrongSection.style.display = 'block';
+        wrongGrid.innerHTML = "";
+        
+        quizState.forEach((state, index) => {
+            if (state.status === 'wrong') {
+                const item = document.createElement('div');
+                item.className = 'wrong-item';
+                item.innerText = index + 1;
+                item.onclick = () => {
+                    closeModal();
+                    loadQuestion(index);
+                };
+                wrongGrid.appendChild(item);
+            }
+        });
+    } else {
+        wrongSection.style.display = 'none';
+    }
+
+    // Modal'ı göster
+    document.getElementById('result-modal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('result-modal').style.display = 'none';
+}
+
+// Uygulamayı Başlat
+init();
+
+</script>
+</body>
+</html>

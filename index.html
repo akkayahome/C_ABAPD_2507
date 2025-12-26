@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABAP Certification Quiz - C_ABAPD_2507</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ABAP Certification Quiz - Mobile Pro</title>
     <style>
         :root {
             --primary: #3498db;
@@ -11,12 +11,12 @@
             --danger: #e74c3c;
             --warning: #f1c40f;
             --dark: #2c3e50;
-            --light: #ecf0f1;
+            --light: #f8f9fa;
             --gray: #95a5a6;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #e9ecef;
             color: #333;
             margin: 0;
@@ -25,15 +25,15 @@
             overflow: hidden;
         }
 
-        /* --- SOL PANEL (NAVİGASYON) --- */
+        /* --- SOL PANEL (NAVİGASYON - DESKTOP) --- */
         #nav-panel {
             width: 320px;
             background: white;
             border-right: 1px solid #ddd;
             display: flex;
             flex-direction: column;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
             z-index: 10;
+            flex-shrink: 0;
         }
 
         .nav-header {
@@ -49,13 +49,15 @@
             font-size: 0.9rem;
             display: flex;
             justify-content: space-around;
-            background: #f8f9fa;
+            background: #fff;
+            font-weight: bold;
         }
 
         .nav-grid-container {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 10px;
+            background: #fdfdfd;
         }
 
         .nav-grid {
@@ -72,47 +74,38 @@
             background: #eee;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: bold;
-            color: #555;
-            transition: all 0.2s;
+            color: #666;
             border: 2px solid transparent;
-        }
-
-        .nav-item:hover {
-            background: #dcdcdc;
         }
 
         .nav-item.active {
             border-color: var(--primary);
             background-color: #fff;
             color: var(--primary);
-            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
         }
 
-        .nav-item.correct { background-color: var(--success); color: white; }
-        .nav-item.wrong { background-color: var(--danger); color: white; }
+        .nav-item.correct { background-color: var(--success); color: white; border-color: var(--success); }
+        .nav-item.wrong { background-color: var(--danger); color: white; border-color: var(--danger); }
 
-        /* Finish Button Area */
         .nav-footer {
             padding: 15px;
             border-top: 1px solid #ddd;
             background: #fff;
         }
-        
+
         .btn-finish {
             width: 100%;
             background-color: var(--dark);
             color: white;
-            padding: 12px;
+            padding: 15px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 1rem;
-            transition: background 0.3s;
         }
-        .btn-finish:hover { background-color: #1a252f; }
 
         /* --- SAĞ PANEL (SORU ALANI) --- */
         #main-area {
@@ -120,42 +113,44 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            background: #f1f3f5;
             position: relative;
         }
 
         .quiz-container {
-            max-width: 900px;
-            margin: 40px auto;
+            max-width: 800px;
+            margin: 30px auto;
             background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             width: 90%;
         }
 
         .header {
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--light);
-            padding-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
         }
 
         .question-badge {
             background: var(--dark);
             color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: bold;
         }
 
         h2 {
-            font-size: 1.3rem;
-            line-height: 1.5;
-            color: var(--dark);
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #2c3e50;
             margin-top: 0;
+            font-weight: 600;
         }
 
         /* Kod Blokları */
@@ -165,219 +160,221 @@
             padding: 15px;
             border-radius: 8px;
             overflow-x: auto;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-left: 4px solid var(--primary);
             margin: 15px 0;
         }
-        
-        code { font-family: 'Consolas', monospace; }
 
         /* Şıklar */
         .options-grid {
             display: grid;
             gap: 12px;
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
         .option-btn {
             background: #fff;
-            border: 2px solid #e0e0e0;
-            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            padding: 16px;
             border-radius: 10px;
             text-align: left;
             cursor: pointer;
             font-size: 1rem;
-            transition: all 0.2s;
             display: flex;
             align-items: flex-start;
+            color: #495057;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent; /* Mobil için */
         }
 
-        .option-btn:hover:not(:disabled) {
-            border-color: var(--primary);
-            background-color: #f7fbff;
-        }
-
-        .option-btn.selected {
-            border-color: var(--primary);
-            background-color: #eaf6ff;
-            font-weight: 600;
-        }
-
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #f8fbff; }
+        .option-btn.selected { border-color: var(--primary); background-color: #e7f5ff; color: var(--primary); font-weight: 600; }
+        
         .option-marker {
             font-weight: bold;
-            margin-right: 15px;
-            min-width: 25px;
+            margin-right: 12px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eee;
+            border-radius: 50%;
+            font-size: 0.8rem;
         }
+        
+        .option-btn.selected .option-marker { background: var(--primary); color: white; }
 
-        /* Cevap Renkleri */
-        .option-btn.correct {
-            background-color: #d4edda !important;
-            border-color: var(--success) !important;
-            color: #155724;
-        }
+        .option-btn.correct { background-color: #d4edda !important; border-color: var(--success) !important; color: #155724; }
+        .option-btn.correct .option-marker { background: var(--success); color: white; }
 
-        .option-btn.wrong {
-            background-color: #f8d7da !important;
-            border-color: var(--danger) !important;
-            color: #721c24;
-        }
-
-        .option-btn.missed {
-            border-color: var(--success) !important;
-            background-color: #fff;
-            color: var(--success);
-            border-style: dashed;
-        }
+        .option-btn.wrong { background-color: #f8d7da !important; border-color: var(--danger) !important; color: #721c24; }
+        .option-btn.wrong .option-marker { background: var(--danger); color: white; }
 
         /* Açıklama */
         #explanation-box {
-            margin-top: 25px;
+            margin-top: 20px;
             background-color: #fff3cd;
             border: 1px solid #ffeeba;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             color: #856404;
             display: none;
+            font-size: 0.95rem;
         }
-        
-        #explanation-text ul { padding-left: 20px; }
-        #explanation-text code { background: rgba(0,0,0,0.05); padding: 2px 4px; border-radius: 3px; }
 
-        /* Alt Kontroller */
+        /* Kontroller */
         .footer-controls {
             margin-top: 30px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            gap: 10px;
         }
 
         .nav-btn-group { display: flex; gap: 10px; }
 
         .btn {
-            padding: 12px 25px;
+            padding: 14px 20px;
             border: none;
             border-radius: 8px;
             font-size: 1rem;
             cursor: pointer;
             font-weight: bold;
             color: white;
-            transition: opacity 0.3s;
-        }
-        
-        .btn:hover { opacity: 0.9; }
-        .btn:disabled { background-color: #ccc !important; cursor: not-allowed; }
-
-        .btn-nav { background-color: var(--gray); }
-        .btn-check { background-color: var(--success); }
-        
-        .badge-info {
-            background: #eee;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: #555;
-            display: inline-block;
-            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* --- MODAL (POPUP) --- */
+        .btn-nav { background-color: var(--gray); color: white; }
+        .btn-check { background-color: var(--success); flex: 1; }
+
+        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(5px);
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
             text-align: center;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: slideUp 0.3s ease-out;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .result-score {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--dark);
-            margin: 10px 0;
-        }
-
-        .result-message {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            font-weight: bold;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
         .stat-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
         }
 
         .stat-box {
-            padding: 15px;
+            padding: 10px;
             border-radius: 8px;
             color: white;
-        }
-
-        .wrong-list-container {
-            text-align: left;
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
+            text-align: center;
         }
 
         .wrong-list-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
             gap: 8px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .wrong-item {
             background: var(--danger);
             color: white;
-            padding: 8px;
-            text-align: center;
-            border-radius: 4px;
+            padding: 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: transform 0.2s;
-        }
-        .wrong-item:hover { transform: scale(1.1); }
-
-        .btn-close-modal {
-            margin-top: 20px;
-            background: var(--dark);
-            width: 100%;
         }
 
-        /* Responsive */
+        /* --- MOBİL UYUMLULUK (RESPONSIVE) --- */
         @media (max-width: 768px) {
-            body { flex-direction: column; overflow: auto; height: auto; }
-            #nav-panel { width: 100%; height: auto; order: 2; }
-            #main-area { height: auto; order: 1; }
-            .quiz-container { margin: 20px auto; padding: 20px; }
-            .nav-grid-container { max-height: 200px; }
-        }
+            body {
+                flex-direction: column; /* Alt alta diz */
+                height: 100vh;
+                overflow: hidden;
+            }
 
+            /* 1. Navigasyon Aşağıya */
+            #nav-panel {
+                order: 2; /* Soru alanının altına al */
+                width: 100%;
+                height: auto;
+                max-height: 250px; /* Çok yer kaplamasın */
+                border-right: none;
+                border-top: 2px solid #ddd;
+            }
+
+            .nav-header { padding: 10px; display: none; } /* Başlığı mobilde gizle */
+            .nav-stats { font-size: 0.8rem; padding: 5px; background: #eee; }
+            .nav-grid-container { padding: 5px; }
+            .nav-grid { grid-template-columns: repeat(8, 1fr); } /* Mobilde daha sıkışık ızgara */
+            .nav-item { font-size: 0.75rem; border-radius: 4px; }
+
+            .nav-footer { padding: 10px; }
+            .btn-finish { padding: 10px; font-size: 0.9rem; }
+
+            /* 2. Ana Alan (Soru) */
+            #main-area {
+                order: 1;
+                height: auto;
+                flex: 1; /* Kalan tüm alanı kapla */
+            }
+
+            .quiz-container {
+                margin: 0;
+                width: 100%;
+                max-width: 100%;
+                border-radius: 0; /* Köşeleri düzle */
+                padding: 20px;
+                box-shadow: none;
+                min-height: 100%; /* İçerik azsa bile dolu görünsün */
+                box-sizing: border-box;
+            }
+
+            h2 { font-size: 1.1rem; }
+            pre { font-size: 0.75rem; padding: 10px; }
+            
+            /* 3. Butonlar - Mobilde Alt Alta ve Büyük */
+            .footer-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn-group {
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                padding: 16px; /* Daha kolay basılsın */
+                font-size: 1.1rem;
+            }
+
+            .option-btn {
+                padding: 15px 10px;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -385,7 +382,6 @@
     <div id="nav-panel">
         <div class="nav-header">
             <h3>ABAP Soru Paneli</h3>
-            <h3>Kağan AKKAYA</h3>
         </div>
         <div class="nav-stats">
             <span style="color:var(--success)">✔ <span id="total-correct">0</span></span>
@@ -396,14 +392,14 @@
             <div id="nav-grid" class="nav-grid"></div>
         </div>
         <div class="nav-footer">
-            <button class="btn-finish" onclick="finishExam()">🏁 Sınavı Bitir</button>
+            <button class="btn-finish" onclick="finishExam()">🏁 Sınavı Bitir ve Sonucu Gör</button>
         </div>
     </div>
 
     <div id="main-area">
         <div class="quiz-container">
             <div class="header">
-                <span class="question-badge" id="q-header">SORU 1 / 126</span>
+                <span class="question-badge" id="q-header">SORU 1</span>
             </div>
 
             <div id="quiz-content">
@@ -411,56 +407,55 @@
                 <div id="options-container" class="options-grid"></div>
                 
                 <div id="explanation-box">
-                    <h4>Açıklama:</h4>
+                    <h4>💡 Açıklama:</h4>
                     <div id="explanation-text"></div>
                 </div>
             </div>
 
             <div class="footer-controls">
-                <div class="nav-btn-group">
-                    <button id="prev-btn" class="btn btn-nav" onclick="prevQuestion()">⬅ Önceki</button>
-                    <button id="next-btn" class="btn btn-nav" onclick="nextQuestion()">Sonraki ➡</button>
-                </div>
                 <button id="check-btn" class="btn btn-check" onclick="checkAnswer()">Cevabı Kontrol Et</button>
+                <div class="nav-btn-group">
+                    <button id="prev-btn" class="btn btn-nav" style="flex:1" onclick="prevQuestion()">⬅ Önceki</button>
+                    <button id="next-btn" class="btn btn-nav" style="flex:1" onclick="nextQuestion()">Sonraki ➡</button>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="result-modal" class="modal-overlay">
         <div class="modal-content">
-            <h2>Sınav Sonucu</h2>
-            <div id="result-icon" style="font-size: 3rem; margin-bottom: 10px;"></div>
-            <div id="final-score-percent" class="result-score"></div>
-            <div id="final-message" class="result-message"></div>
+            <h2 style="margin-bottom:5px">Sınav Sonucu</h2>
+            <div id="result-icon" style="font-size: 4rem; margin: 10px 0;"></div>
+            <div id="final-score-percent" style="font-size:3rem; font-weight:bold; color:var(--dark)"></div>
+            <div id="final-message" style="font-size:1.2rem; font-weight:bold; margin-bottom:20px"></div>
 
             <div class="stat-grid">
                 <div class="stat-box" style="background: var(--success)">
-                    <div style="font-size:0.8rem">DOĞRU</div>
-                    <div id="final-correct" style="font-size:1.5rem; font-weight:bold">0</div>
+                    <div style="font-size:0.7rem; opacity:0.9">DOĞRU</div>
+                    <div id="final-correct" style="font-size:1.4rem; font-weight:bold">0</div>
                 </div>
                 <div class="stat-box" style="background: var(--danger)">
-                    <div style="font-size:0.8rem">YANLIŞ</div>
-                    <div id="final-wrong" style="font-size:1.5rem; font-weight:bold">0</div>
+                    <div style="font-size:0.7rem; opacity:0.9">YANLIŞ</div>
+                    <div id="final-wrong" style="font-size:1.4rem; font-weight:bold">0</div>
                 </div>
                 <div class="stat-box" style="background: var(--gray)">
-                    <div style="font-size:0.8rem">BOŞ</div>
-                    <div id="final-empty" style="font-size:1.5rem; font-weight:bold">0</div>
+                    <div style="font-size:0.7rem; opacity:0.9">BOŞ</div>
+                    <div id="final-empty" style="font-size:1.4rem; font-weight:bold">0</div>
                 </div>
             </div>
 
-            <div id="wrong-answers-section" class="wrong-list-container" style="display:none;">
-                <h4 style="color:var(--danger)">Hatalı Soruları İncele:</h4>
-                <p style="font-size:0.8rem; color:#666">Numaraya tıklayarak soruyu ve açıklamasını görebilirsin.</p>
+            <div id="wrong-answers-section" style="display:none; text-align:left; margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
+                <h4 style="color:var(--danger); margin:0 0 10px 0;">Hatalı Sorular:</h4>
+                <p style="font-size:0.8rem; color:#888; margin-top:-5px">Soru numarasına tıklayarak inceleyebilirsin.</p>
                 <div id="wrong-answers-grid" class="wrong-list-grid"></div>
             </div>
 
-            <button class="btn btn-close-modal" onclick="closeModal()">Pencereyi Kapat</button>
+            <button class="btn" style="background:var(--dark); width:100%; margin-top:20px" onclick="closeModal()">Kapat</button>
         </div>
     </div>
 
 <script>
-
-// --- GÜNCELLENMİŞ TAM İÇERİK VERİLERİ (130 Soru) ---
+// --- SORU VERİLERİ (GÜNCELLENMİŞ 130 SORU) ---
 const rawQuestions = [
   {
     "id": 1,
@@ -1996,9 +1991,7 @@ const rawQuestions = [
     "ans": [0, 1],
     "expl": "Parametreye değer geçerken <strong>Literal</strong> ('Değer') veya <strong>Host Variable/Expression</strong> (@ile başlayan) kullanılabilir. Session variable ABAP SQL tarafında <code>:</code> ile değil doğrudan parametre içinde kullanılamaz."
   },
-  
-    
-    {
+  {
     "id": 127,
     "q": "You want to enhance a business object to retrive a default company code that is selected form the databasse.\nWhich extensions type must you use?",
     "options": [
@@ -2010,9 +2003,7 @@ const rawQuestions = [
     "ans": [2],
     "expl": "SAP.COM Örnek Soruları"
   },
-  
-    
-      {
+  {
     "id": 128,
     "q": "In the RESTful Application Programming model where do you implement non-standart operations for customized business-logic behavior?",
     "options": [
@@ -2024,8 +2015,7 @@ const rawQuestions = [
     "ans": [2],
     "expl": "SAP.COM Örnek Soruları"
   },
-  
-          {
+  {
     "id": 129,
     "q": "What can you add to business object in the ABAP RESTful application Programming Model?",
     "options": [
@@ -2037,8 +2027,7 @@ const rawQuestions = [
     "ans": [1, 2],
     "expl": "SAP.COM Örnek Soruları"
   },
-  
-   {
+  {
     "id": 130,
     "q": "What do you have consider when working with interfaces?",
     "options": [
@@ -2055,7 +2044,6 @@ const rawQuestions = [
 
 // --- DURUM YÖNETİMİ ---
 let currentQuestionIndex = 0;
-// Her soru için durum: { status: 'pending' | 'correct' | 'wrong', selected: [] }
 let quizState = Array(130).fill(null).map(() => ({ status: 'pending', selected: [] }));
 
 // DOM Elementleri
@@ -2097,7 +2085,7 @@ function renderNavGrid() {
     });
 }
 
-// Nav Grid Güncelle (Sadece ilgili item)
+// Nav Grid Güncelle
 function updateNavGridItem(index) {
     const item = document.getElementById(`nav-item-${index}`);
     if (!item) return;
@@ -2111,7 +2099,6 @@ function updateNavGridItem(index) {
 
 // Soruyu Yükle
 function loadQuestion(index) {
-    // Eski aktifliği kaldır
     const prevItem = document.getElementById(`nav-item-${currentQuestionIndex}`);
     if(prevItem) prevItem.classList.remove("active");
 
@@ -2119,14 +2106,19 @@ function loadQuestion(index) {
     const q = rawQuestions[index];
     const state = quizState[index];
 
-    // Yeni aktifliği ekle
     updateNavGridItem(index);
+    
+    // Otomatik kaydırma (nav grid için)
+    const navItem = document.getElementById(`nav-item-${index}`);
+    if(navItem) {
+        navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
 
     // UI Güncelle
     qHeader.innerText = `SORU ${index + 1} / ${rawQuestions.length}`;
     
     let qContent = `<h2>${q.q}</h2>`;
-    if(q.ans.length > 1) qContent += `<span class="badge-info">Çoklu Seçim (${q.ans.length} adet)</span>`;
+    if(q.ans.length > 1) qContent += `<span class="question-badge" style="background:#f1c40f; color:#333; margin-top:5px; display:inline-block">Çoklu Seçim (${q.ans.length} adet)</span>`;
     questionTextEl.innerHTML = qContent;
 
     // Buton Durumları
@@ -2140,6 +2132,7 @@ function loadQuestion(index) {
     if (state.status !== 'pending') {
         showExplanation(q);
         checkBtn.style.display = "none";
+        // Mobilde ileri/geri butonları daha rahat kullanılsın diye nav butonlarını genişlet
     } else {
         explanationBox.style.display = "none";
         checkBtn.style.display = "block";
@@ -2153,22 +2146,17 @@ function renderOptions(q, state) {
         btn.className = "option-btn";
         btn.innerHTML = `<span class="option-marker">${String.fromCharCode(65 + i)}</span> <div>${opt}</div>`;
         
-        // Eğer daha önce seçilmişse işaretle
-        if (state.selected.includes(i)) {
-            btn.classList.add("selected");
-        }
+        if (state.selected.includes(i)) btn.classList.add("selected");
 
-        // Eğer soru zaten cevaplanmışsa renkleri boya ve disable et
         if (state.status !== 'pending') {
             btn.disabled = true;
             if (q.ans.includes(i)) {
                 if (state.selected.includes(i)) btn.classList.add("correct");
-                else btn.classList.add("missed");
+                else btn.classList.add("correct"); // Doğru cevap ama seçilmemişse de göster
             } else if (state.selected.includes(i)) {
                 btn.classList.add("wrong");
             }
         } else {
-            // Cevaplanmamışsa tıklama olayı
             btn.onclick = () => toggleSelection(i, q.ans.length > 1);
         }
         
@@ -2201,13 +2189,11 @@ function checkAnswer() {
     const correctAns = q.ans.sort().toString();
     const userAns = state.selected.sort().toString();
 
-    // Durumu güncelle
     state.status = (correctAns === userAns) ? 'correct' : 'wrong';
 
-    // UI Güncelle
     updateScore();
     updateNavGridItem(currentQuestionIndex);
-    loadQuestion(currentQuestionIndex); // Yeniden render et (renklerle)
+    loadQuestion(currentQuestionIndex);
 }
 
 function updateScore() {
@@ -2237,18 +2223,13 @@ function prevQuestion() {
     }
 }
 
-// --- YENİ EKLENEN FONKSİYONLAR ---
-
 function finishExam() {
-    // Hesaplamalar
     const correctCount = quizState.filter(s => s.status === 'correct').length;
     const wrongCount = quizState.filter(s => s.status === 'wrong').length;
     const totalAnswered = correctCount + wrongCount;
     const emptyCount = rawQuestions.length - totalAnswered;
-    
     const percent = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
 
-    // Elementleri doldur
     document.getElementById('final-correct').innerText = correctCount;
     document.getElementById('final-wrong').innerText = wrongCount;
     document.getElementById('final-empty').innerText = emptyCount;
@@ -2259,7 +2240,6 @@ function finishExam() {
     const wrongSection = document.getElementById('wrong-answers-section');
     const wrongGrid = document.getElementById('wrong-answers-grid');
 
-    // Başarı Durumu
     if (percent >= 70) {
         msgEl.innerHTML = "<span style='color:var(--success)'>TEBRİKLER! SERTİFİKA KAZANDINIZ! 🏆</span>";
         iconEl.innerHTML = "🎉";
@@ -2268,11 +2248,9 @@ function finishExam() {
         iconEl.innerHTML = "⚠️";
     }
 
-    // Yanlış Cevapları Listele
     if (wrongCount > 0) {
         wrongSection.style.display = 'block';
         wrongGrid.innerHTML = "";
-        
         quizState.forEach((state, index) => {
             if (state.status === 'wrong') {
                 const item = document.createElement('div');
@@ -2289,7 +2267,6 @@ function finishExam() {
         wrongSection.style.display = 'none';
     }
 
-    // Modal'ı göster
     document.getElementById('result-modal').style.display = 'flex';
 }
 
@@ -2299,8 +2276,6 @@ function closeModal() {
 
 // Uygulamayı Başlat
 init();
-
 </script>
 </body>
-
 </html>
